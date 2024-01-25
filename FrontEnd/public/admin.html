@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+    rel="stylesheet">
+
+  <title>Product</title>
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="css/fontawesome.css">
+  <link rel="stylesheet" href="css/templatemo-sixteen.css">
+  <link rel="stylesheet" href="css/owl.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+
+  <!-- Bootstrap core JavaScript -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- Additional Scripts -->
+  <script src="js/custom.js"></script>
+  <script src="js/owl.js"></script>
+  <script src="js/slick.js"></script>
+  <script src="js/isotope.js"></script>
+  <script src="js/accordions.js"></script>
+  <script src="js/logincheck.js"></script>
+
+</head>
+
+<body>
+
+  <script>
+    $(document).ready(function () {
+      const token = localStorage.getItem('JWT');
+
+      $("#container").hide()
+
+      const userData = localStorage.getItem("User");
+
+      if (userData == null) {
+        $("#userprofile").hide()
+        $("#logincontainer").show()
+        $("#logoutcontainer").hide()
+        $("#admin").hide()
+      }
+
+      if (userData == null) window.location.assign(`http://localhost:3001/index.html`)
+      if (userData == null) return
+
+      const { userid, type } = JSON.parse(userData)[0]
+      if (type.toLowerCase() != "admin") window.location.assign(`http://localhost:3001/index.html`)
+      if (type.toLowerCase() != "admin") return
+
+      $("#container").show()
+
+      axios.post(`http://localhost:8081/user/isloggedin`, ({ userid, type }), {
+        headers: { 'authorization': 'Bearer ' + token }
+      }).then(({ data }) => {
+        if (data) {
+          let { userid, type } = data
+          if (type.toLowerCase() != "admin")
+            window.location.assign("http://localhost:3001/index.html")
+        }
+      }).catch((err) => {
+        window.location.assign("http://localhost:3001/index.html")
+      });
+
+      //Load category drop down menu
+      axios.get(`http://localhost:8081/category`).then(({ data }) => {
+        let divCatDropdown = ""
+        if (data != null) {
+          data.forEach(({ categoryid, category, description }) => {
+            divCatDropdown += `<option value="${categoryid}">${category}</option>`
+          });
+        } else {
+          window.alert("Error occured...")
+        }
+        $("#prodCat").append(divCatDropdown);
+      }).catch((err) => { console.log(err) });
+
+      //Change label on file change
+      $('#prodImage').on('change', function () {
+        let file = $('#prodImage').prop('files')[0];
+        $('#fileLabel').html(file.name)
+      });
+
+      $("#catAdd").click((e) => {
+        e.preventDefault()
+        const category = $("#catName").val()
+        const description = $("#catDescription").val()
+
+        if (category == "")
+          $("#catName").addClass("is-invalid").removeClass("is-valid")
+        else
+          $("#catName").removeClass("is-invalid").addClass("is-valid")
+
+        if (description == "")
+          $("#catDescription").addClass("is-invalid").removeClass("is-valid")
+        else
+          $("#catDescription").removeClass("is-invalid").addClass("is-valid")
+
+        if (category == "" || description == "") return
+
+        var data = { category, description }
+        console.log(data)
+        axios.post(`http://localhost:8081/category`, data, {
+          headers: { 'authorization': 'Bearer ' + token }
+        }).then((data) => {
+          if (data) {
+            $("#catName").removeClass("is-valid")
+            $("#catDescription").removeClass("is-valid")
+
+            $("#catAddFeedback").addClass("text-success").removeClass("text-danger")
+            $("#catAddFeedback").html("Category successfully added")
+          } else {
+            $("#catAddFeedback").addClass("text-danger")
+            $("#catAddFeedback").html("Error!")
+          }
+        }).catch((err) => {
+          let errorMessage = "";
+          if (err.response) {
+            const { data, status, headers } = err.response
+            errorMessage = data.message
+          } else {
+            errorMessage = "Error!"
+          }
+          $("#catAddFeedback").addClass("text-danger").removeClass("text-success")
+          $("#catAddFeedback").html(errorMessage)
+        });
+
+      })
+
+      $("#prodAdd").click((e) => {
+        e.preventDefault()
+        const name = $("#prodName").val()
+        const description = $("#prodDescription").val()
+        const brand = $("#prodBrand").val()
+        const price = $("#prodPrice").val()
+        const categoryid = $("#prodCat").val()
+        const file = $('#prodImage').prop('files')[0];
+
+        if (name == "") $("#prodName").addClass("is-invalid").removeClass("is-valid")
+        else $("#prodName").removeClass("is-invalid").addClass("is-valid")
+
+        if (brand == "") $("#prodBrand").addClass("is-invalid").removeClass("is-valid")
+        else $("#prodBrand").removeClass("is-invalid").addClass("is-valid")
+
+        if (description == "") $("#prodDescription").addClass("is-invalid").removeClass("is-valid")
+        else $("#prodDescription").removeClass("is-invalid").addClass("is-valid")
+
+        if (price == "" || isNaN(price)) $("#prodPrice").addClass("is-invalid").removeClass("is-valid")
+        else $("#prodPrice").removeClass("is-invalid").addClass("is-valid")
+
+        if (categoryid == "" || isNaN(categoryid)) $("#prodCat").addClass("is-invalid").removeClass("is-valid")
+        else $("#prodCat").removeClass("is-invalid").addClass("is-valid")
+
+        if (file == undefined) $("#prodImage").addClass("is-invalid").removeClass("is-valid")
+        else $("#prodImage").removeClass("is-invalid").addClass("is-valid")
+
+        if (name == "" || brand == "" || description == "" || price == "" || isNaN(price) || categoryid == "" || isNaN(categoryid) || file == undefined) return
+
+        let data = JSON.stringify({ name, price, description, brand, categoryid })
+        let dataImage = new FormData()
+        dataImage.append("image", file)
+
+        //Create product
+        $.ajax({
+          headers: { 'authorization': 'Bearer ' + token },
+          url: 'http://localhost:8081/product',
+          type: 'POST',
+          data: data,
+          contentType: 'application/json',
+          dataType: 'json',
+          success: function ({ productid }, textStatus, xhr) {
+            if (data != null) {
+
+              axios.post(`http://localhost:8081/product/${productid}/image`, dataImage, {
+                headers: { "authorization": "Bearer " + token }
+              }).then(() => {
+                document.getElementById("prodForm").reset();
+
+                $("#prodName").removeClass("is-valid")
+                $("#prodBrand").removeClass("is-valid")
+                $("#prodDescription").removeClass("is-valid")
+                $("#prodPrice").removeClass("is-valid")
+                $("#prodCat").removeClass("is-valid")
+                $("#prodImage").removeClass("is-valid")
+
+                $('#prodImage').removeProp('files')
+                $('#fileLabel').html('Choose file')
+
+                $("#prodAddFeedback").addClass("text-success").removeClass("text-danger")
+                $("#prodAddFeedback").html("Product successfully added")
+                // location.reload()
+
+
+
+              }).catch((err) => {
+                let errorMessage = "";
+                if (err.response) {
+                  const { data, status, headers } = err.response
+                  errorMessage = data.message
+                } else {
+                  errorMessage = "Error!"
+                }
+                $("#prodAddFeedback").addClass("text-danger").removeClass("text-success")
+                $("#prodAddFeedback").html(errorMessage)
+
+                axios.delete(`http://localhost:8081/product/${productid}`, {
+                  headers: { 'authorization': 'Bearer ' + token }
+                }).then((data) => {
+                }).catch((err) => {
+                });
+              });
+
+            } else {
+              $("#prodAddFeedback").addClass("text-danger")
+              $("#prodAddFeedback").html("Error!")
+            }
+          },
+          error: function (xhr, textStatus, errorThrown) {
+            console.log(errorThrown)
+            $("#prodAddFeedback").addClass("text-danger")
+            if (errorThrown)
+              $("#prodAddFeedback").html(errorThrown)
+            else
+              $("#prodAddFeedback").html("Error!")
+          }
+        })
+      })
+     
+
+    })
+
+  </script>
+  <!-- ***** Preloader Start ***** -->
+  <div id="preloader">
+    <div class="jumper">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- Header -->
+  <header class="">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <h2>Singapore <em>Polytechnic</em></h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="products.html">Our Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="promotion.html">Promotion</a>
+            </li>
+            <li class="nav-item active activeSpecial" id="admin">
+              <a class="nav-link" href="admin.html" id="login">Admin
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item" id="logincontainer">
+              <a class="nav-link" href="login.html" id="login">Login</a>
+            </li>
+            <li class="nav-item" id="logoutcontainer">
+              <a class="nav-link" href="" id="logout">Log out</a>
+            </li>
+            <!-- <li class="nav-item" style="opacity: 0;">
+              <a class="nav-link active activeSpecial">.</a>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+
+      <a style="position: relative;bottom: 10px; right: 55px;" href="userprofile.html" id="userprofile">
+        <img class="setting" src="images/setting.png" width="20px" height="20px">
+      </a>
+
+      <a style="position: relative;bottom: 10px; right: 25px;" href="cart.html" id="cart">
+        <img class="setting" src="images/cart.png" width="22px" height="22px">
+      </a>
+
+    </nav>
+  </header>
+
+  <!-- Page Content -->
+  <div class="header-text">
+    <div class="container p-5">
+    </div>
+  </div>
+
+
+  <div class="container" id="container">
+
+    <div class="section-heading p-0 mb-4">
+      <h2>Admin</h2>
+    </div>
+
+    <!-- ADD PRODUCT FORM -->
+    <form action="" class="product-item-custom" id="prodForm">
+      <h2 class="p-4 pb-0 m-0">Add Product</h2>
+      <div class="row m-2">
+
+        <!-- LEFT SIDE OF ADD PRODUCT -->
+        <div class="col">
+
+          <!-- CATEGORY -->
+          <div class="form-group">
+            <label for="" class="form-label">Category</label>
+            <select class="custom-select" id="prodCat" required>
+              <option value="">Category</option>
+            </select>
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback">Please select a category</div>
+          </div>
+          <!-- CATEGORY END -->
+
+          <!-- BRAND -->
+          <div class="mb-3">
+            <label for="prodBrand" class="form-label">Brand</label>
+            <div class="input-group">
+              <input placeholder="Product Brand" type="text" class="form-control " id="prodBrand">
+              <div class="valid-feedback">Looks good</div>
+              <div class="invalid-feedback"> Please choose a valid brand. </div>
+            </div>
+          </div>
+          <!-- BRAND END -->
+
+          <!-- IMAGE UPLOAD -->
+          <label for="customFile" class="form-label">Product Image</label>
+          <div class="custom-file input-group">
+            <input type="file" class="custom-file-input" id="prodImage" placeholder="test" accept=".png,.jpg">
+            <label class="custom-file-label" for="customFile" id="fileLabel">Choose file</label>
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback">Please Select Product Image</div>
+          </div>
+          <!-- IMAGE END -->
+
+        </div>
+        <!-- LEFT SIDE OF ADD PRODUCT END -->
+
+        <!-- RIGHT SIDE OF ADD PRODUCT -->
+        <div class="col">
+
+          <!-- NAME -->
+          <div class="mb-3">
+            <label for="prodName" class="form-label">Name</label>
+            <div class="input-group">
+              <input placeholder="Product Name" type="text" class="form-control " id="prodName">
+              <div class="valid-feedback">Looks good</div>
+              <div class="invalid-feedback"> Please choose a unique and valid product name. </div>
+            </div>
+          </div>
+          <!-- NAME END -->
+
+          <!-- PRICE -->
+          <label for="prodPrice" class="form-label">Price</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">$</span>
+            </div>
+            <input placeholder="Product Price" type="text" id="prodPrice" class="form-control"
+              aria-label="Amount (to the nearest dollar)">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback"> Please choose a valid price. </div>
+          </div>
+          <!-- PRICE END -->
+
+          <!-- DESCRIPTION -->
+          <div class="form-group">
+            <label for="prodDescription">Description</label>
+            <textarea placeholder="Product description" class="form-control" id="prodDescription" rows="1"></textarea>
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback"> Please add description. </div>
+          </div>
+          <!-- DESCRIPTION END -->
+
+        </div>
+        <!-- RIGHT SIDE OF ADD PRODUCT END -->
+
+      </div>
+
+      <div class="row  m-2 py-2 pt-4">
+        <div class="col">
+          <h3 id="prodAddFeedback"></h3>
+        </div>
+        <div class="col d-grid d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary" id="prodAdd">Add Product</button>
+        </div>
+      </div>
+
+    </form>
+    <!-- ADD PRODUCT FORM END -->
+
+
+    <!-- ADD CATEGORY FORM -->
+    <form action="" class="product-item-custom" id="catForm">
+      <h2 class="p-4 pb-0 m-0">Add Category</h2>
+      <div class="row m-2">
+
+        <!-- LEFT SIDE OF ADD CATEGORY -->
+        <div class="col">
+
+          <!-- NAME -->
+          <div class="mb-3">
+            <label for="catName" class="form-label">Name</label>
+            <div class="input-group">
+              <input placeholder="Category Name" type="text" class="form-control " id="catName">
+              <div class="valid-feedback">Looks good</div>
+              <div class="invalid-feedback"> Please choose a unique and valid category name. </div>
+            </div>
+          </div>
+          <!-- NAME END -->
+
+        </div>
+        <!-- LEFT SIDE OF ADD CATEGORY END -->
+
+        <!-- RIGHT SIDE OF ADD CATEGORY -->
+        <div class="col">
+
+          <!-- DESCRIPTION -->
+          <div class="form-group">
+            <label for="catDescription">Description</label>
+            <textarea placeholder="Category description" class="form-control" id="catDescription" rows="1"></textarea>
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback"> Please add description. </div>
+          </div>
+          <!-- DESCRIPTION END -->
+
+        </div>
+        <!-- RIGHT SIDE OF ADD CATEGORY END -->
+
+      </div>
+
+      <div class="row  m-2 py-2 pt-4">
+        <div class="col-10">
+          <h3 id="catAddFeedback"></h3>
+        </div>
+        <div class="col-2 d-grid d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary" id="catAdd">Add Category</button>
+        </div>
+      </div>
+
+    </form>
+    <!-- ADD CATEGORY FORM END -->
+
+
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="inner-content">
+            <p>Copyright &copy; </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+    rel="stylesheet">
+
+  <title>Product</title>
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="css/fontawesome.css">
+  <link rel="stylesheet" href="css/templatemo-sixteen.css">
+  <link rel="stylesheet" href="css/owl.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+
+  <!-- Bootstrap core JavaScript -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- Additional Scripts -->
+  <script src="js/custom.js"></script>
+  <script src="js/owl.js"></script>
+  <script src="js/slick.js"></script>
+  <script src="js/isotope.js"></script>
+  <script src="js/accordions.js"></script>
+  <script src="js/logincheck.js"></script>
+
+</head>
+
+<body>
+
+  <script>
+    $(document).ready(function () {
+      var token = localStorage.getItem("JWT");
+      var userInfo = localStorage.getItem("User")
+      let userId = -1
+
+
+      if (userInfo != undefined)
+        userId = JSON.parse(userInfo)[0].userid
+      else
+        window.location.assign("http://localhost:3001/index.html")
+
+      function editUser() {
+        axios.get(`http://localhost:8081/users/${userId}`, {
+          headers: { 'authorization': 'Bearer ' + token }
+        }).then(({ data: userData }) => {
+          const { contact, email, profile_pic_url, username } = userData
+          $("#editUsername").val(username)
+          $("#editEmail").val(email)
+          $("#editContact").val(contact)
+          $("#editProfilePic").val(profile_pic_url)
+        }).catch((err) => console.log(err));
+      }
+
+      function saveEditUser() {
+        $("#saveProfile").click((e) => {
+          e.preventDefault()
+          const username = $("#editUsername").val()
+          const email = $("#editEmail").val()
+          const contact = $("#editContact").val()
+          const profile_pic_url = $("#editProfilePic").val()
+
+          const oldpassword = $("#editCurrentPassword").val()
+          const password = $("#editNewPassword").val()
+          const CNewPassword = $("#editCNewPassword").val()
+
+          if (username == "") $("#editUsername").addClass("is-invalid").removeClass("is-valid")
+          else $("#editUsername").removeClass("is-invalid").addClass("is-valid")
+
+          if (email == "") $("#editEmail").addClass("is-invalid").removeClass("is-valid")
+          else $("#editEmail").removeClass("is-invalid").addClass("is-valid")
+
+          if (contact == "" || isNaN(contact)) $("#editContact").addClass("is-invalid").removeClass("is-valid")
+          else $("#editContact").removeClass("is-invalid").addClass("is-valid")
+
+          if (profile_pic_url == "") $("#editProfilePic").addClass("is-invalid").removeClass("is-valid")
+          else $("#editProfilePic").removeClass("is-invalid").addClass("is-valid")
+
+          if (oldpassword == "") $("#editCurrentPassword").addClass("is-invalid").removeClass("is-valid")
+          else $("#editCurrentPassword").removeClass("is-invalid").addClass("is-valid")
+
+          if (password == "") $("#editNewPassword").addClass("is-invalid").removeClass("is-valid")
+          else $("#editNewPassword").removeClass("is-invalid").addClass("is-valid")
+
+          if (CNewPassword == "" || password != CNewPassword) $("#editCNewPassword").addClass("is-invalid").removeClass("is-valid")
+          else $("#editCNewPassword").removeClass("is-invalid").addClass("is-valid")
+
+          if (username == "" || email == "" || contact == "" || isNaN(contact) || profile_pic_url == "" || oldpassword == "" || password == "" || CNewPassword == "") return
+
+          let data = { username, email, contact, password, profile_pic_url, oldpassword }
+
+          axios.put(`http://localhost:8081/users/${userId}`, data, {
+            headers: { 'authorization': 'Bearer ' + token }
+          }).then(() => {
+            $("#saveFeedback").addClass("text-success").removeClass("text-danger")
+            $("#saveFeedback").html("Successfully change!")
+          }).catch((err) => {
+            let errorMessage = "";
+            if (err.response) {
+              const { data, status, headers } = err.response
+              errorMessage = data.message
+            } else {
+              errorMessage = "Error!"
+            }
+            $("#saveFeedback").addClass("text-danger").removeClass("text-success")
+            $("#saveFeedback").html(errorMessage)
+          });
+
+          return false
+        })
+      }
+
+
+      function getOrders() {
+        axios.get(`http://localhost:8081/order/${userId}`, {
+          headers: { 'authorization': 'Bearer ' + token }
+        }).then(({ data: orderData }) => {
+
+          if (orderData.length < 1)
+            $("#accordion").append(` <h4 class="d-flex justify-content-center" id="empty">Empty</h4>`)
+          axios.get(`http://localhost:8081/product`).then(({ data: allProduct }) => {
+
+            const getInfo = () => {
+              let temp = [];
+              orderData.forEach(({ cart: userCart, total, created_at, orderid }) => {
+                temp.push({ cart: JSON.parse(userCart), total, created_at, orderid })
+              });
+              return temp
+            };
+
+            const getCartItem = (index) => {
+              let temp = ""
+              let product = {};
+              getInfo()[index].cart.forEach(({ productid, discountPercentage, price, quantity }) => {
+                allProduct.forEach((getProd) => {
+                  let { productid: checkid, name, imagepath } = getProd
+                  if (productid == checkid)
+                    product = getProd
+                });
+                temp += `
+<div class="card-body row m-0">
+            <div class="col-2">
+              <img class="rounded mx-0 d-block m-2" src="${product.imagepath != null ? " http://localhost:8081/" + product.imagepath : null}" style="height: auto;width: 100px;">
+            </div>
+            <div class="col-3 d-grid d-flex justify-content-start align-self-center">
+              ${product.name}
+            </div>
+            <div class="col d-grid d-flex justify-content-end align-self-center">
+              Discount: ${discountPercentage}%
+            </div>
+            <div class="col-2 d-grid d-flex justify-content-end align-self-center">
+              ${quantity} x $${price}
+            </div>
+          </div>
+`
+              })
+
+              return temp
+            }
+            getInfo().forEach(({ cart, total, created_at, orderid }, index) => {
+              console.log(cart, total, created_at)
+              $("#accordion").append(`
+        <div class="card">
+        <div class="card-header" id="order${index}">
+          <h5 class="mb-0 row mx-1">
+            <button class="col btn btn-link flex-column" data-toggle="collapse" data-target="#collapse${index}"
+              aria-expanded="true" aria-controls="collapse${index}">
+              Order ID: ${orderid} 
+            </button>
+           
+            <div class="col d-flex d-grid justify-content-end">
+              
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse${index}" aria-expanded="true"
+                aria-controls="collapse${index}">
+                Total: $${total}
+              </button>
+
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse${index}"
+              aria-expanded="true" aria-controls="collapse${index}">
+              ${new Date(created_at).toLocaleDateString('en-UK', { day: 'numeric', month: 'short', year: 'numeric', })}
+           </button>
+           
+            </div>
+          </h5>
+        </div>
+
+        <div id="collapse${index}" class="collapse " aria-labelledby="order${index}" data-parent="#accordion">
+          ${getCartItem(index)}
+          
+        </div>
+      </div>
+        `)
+            });
+
+          }).catch((err) => console.log(err));
+        }).catch((err) => console.log(err));
+      }
+
+      $("#categoryinterest").empty();
+      getOrders()
+      saveInterest()
+      getInterest()
+      saveEditUser()
+      editUser()
+
+    });
+  </script>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="preloader">
+    <div class="jumper">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- Header -->
+  <header class="">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <h2>Singapore <em>Polytechnic</em></h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="products.html">Our Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="promotion.html">Promotion</a>
+            </li>
+            <li class="nav-item" id="admin">
+              <a class="nav-link" href="admin.html" id="login">Admin</a>
+            </li>
+            <li class="nav-item" id="logincontainer">
+              <a class="nav-link" href="login.html" id="login">Login</a>
+            </li>
+            <li class="nav-item" id="logoutcontainer">
+              <a class="nav-link" href="" id="logout">Log out</a>
+            </li>
+            <li class="nav-item" style="opacity: 0;">
+              <a class="nav-link active activeSpecial">.</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <a style="position: relative;bottom: 10px; right: 55px;" href="userprofile.html" id="userprofile">
+        <img class="setting activeImage" src="images/setting.png" width="20px" height="20px">
+      </a>
+
+      <a style="position: relative;bottom: 10px; right: 25px;" href="cart.html" id="cart">
+        <img class="setting" src="images/cart.png" width="22px" height="22px">
+      </a>
+
+    </nav>
+  </header>
+
+  <!-- Page Content -->
+  <div class="header-text">
+    <div class="container p-5">
+    </div>
+  </div>
+
+  <div class="container" id="container">
+
+    <div class="section-heading mb-3">
+      <h2>User profile</h2>
+    </div>
+
+    <form action="" class="latest-products m-0 mt-4" id="editProfile">
+      <div class="product-item-custom mt-3">
+        <h4 class="m-4">Edit Profile</h4>
+        <div class=" row m-4" id="userProfile">
+
+          <div class="col-4">
+            <div class="form-group">
+              <label for="editUsername" class="form-label">Username</label>
+              <input placeholder="Username" type="text" class="form-control " id="editUsername">
+              <div class="valid-feedback">Looks good</div>
+              <div class="invalid-feedback">Please choose a unique username</div>
+            </div>
+          </div>
+
+          <div class="form-group col-4">
+            <div class="">
+              <label for="editEmail" class="form-label">Email</label>
+              <div class="input-group">
+                <input placeholder="Email" type="text" class="form-control " id="editEmail">
+                <div class="valid-feedback">Looks good</div>
+                <div class="invalid-feedback"> Please choose a unique email. </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-4">
+            <label for="editContact">Contact number</label>
+            <input placeholder="Contact Number" type="text" class="form-control " id="editContact">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback"> Please add your contact number. </div>
+          </div>
+
+          <div class="form-group col-12 ">
+            <label for="editProfilePic">Profile Picture URL</label>
+            <input placeholder="Profile Picture URL" type="text" class="form-control " id="editProfilePic">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback"> Please choose a profile picture url </div>
+          </div>
+
+          <div class="form-group col">
+            <label for="editCurrentPassword">Current Password</label>
+            <input placeholder="Current Password" type="password" class="form-control " id="editCurrentPassword">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback"> Please enter your current password </div>
+          </div>
+
+          <div class="form-group col">
+            <label for="editNewPassword">New Password</label>
+            <input placeholder="New Password" type="password" class="form-control " id="editNewPassword">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback"> Please enter new password</div>
+          </div>
+
+          <div class="form-group col">
+            <label for="editCNewPassword">Comfirm New Password</label>
+            <input placeholder="Comfirm New Password" type="password" class="form-control " id="editCNewPassword">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback"> Please enter new password again </div>
+          </div>
+
+        </div>
+        <div class="row m-2 py-2 pt-4">
+          <div class="col">
+            <h3 id="saveFeedback"></h3>
+          </div>
+          <div class="col d-grid d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary" id="saveProfile">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+    <h4 class="m-4">Orders</h4>
+    <hr>
+    <div id="accordion" class="mt-4">
+      <!-- orders -->
+    </div>
+
+  </div>
+
+
+
+
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="inner-content">
+            <p>Copyright &copy; </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

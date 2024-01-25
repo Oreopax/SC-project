@@ -1,0 +1,33 @@
+1) Open store.sql in this folder and run it in mysql workbench to set up the database
+
+2) Navigate to BackEnd/model/databaseConfig.js and modify password to your own password.
+
+var conn = mysql.createConnection({
+      host: 'localhost',
+      port: 3306,
+      user: 'root',
+      password: 'PASSWORD',
+      database: 'store',
+    });
+
+3) Run node server.js in FrontEnd
+
+4) Run node server.js in Backend
+
+5) Navigate to http://localhost:3001/ in web browser
+
+Note: user account info can be found in the user table in mysql
+
+Note:
+If you encounter an error in backend with error on group by, you can do either of the below:
+
+1)
+You need to run the below statement in workbench everytime you restart your laptop or mysql;
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+2)
+(You can verify with your lecturer in class for option 2 which involves modifying a mysql config file)
+A long term solution is to go C:\ProgramData\MySQL\MySQL Server 8.0\
+ 
+Modify the my.ini file and remove the ONLY_FULL_GROUP_BY  in sql-mode so sql-mode is:
+sql-mode="STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"

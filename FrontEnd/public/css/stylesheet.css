@@ -1,0 +1,373 @@
+.activeSpecial {
+    background: -webkit-linear-gradient(left, red, orange, yellow, green, cyan, rgb(70, 70, 255), violet);
+    background-size: 1400px 200px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation-timing-function: linear;
+    animation-duration: 8s;
+    animation-name: gradient;
+    animation-iteration-count: infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0px 1400px;
+    }
+
+    100% {
+        background-position: 1400px 0px;
+    }
+}
+
+.carousel-control-next,
+.carousel-control-prev,
+.carousel-indicators {
+    filter: invert(100%);
+}
+
+.invertColor {
+    filter: invert(100%);
+}
+
+
+@keyframes rainbowImage {
+
+    15% {
+        filter: invert(12%) sepia(93%) saturate(7214%) hue-rotate(3deg) brightness(101%) contrast(114%);
+    }
+
+    28% {
+        filter: invert(65%) sepia(30%) saturate(3004%) hue-rotate(0deg) brightness(103%) contrast(104%);
+    }
+
+    42% {
+        filter: invert(83%) sepia(99%) saturate(1358%) hue-rotate(358deg) brightness(105%) contrast(105%);
+    }
+
+    56% {
+        filter: invert(47%) sepia(100%) saturate(1762%) hue-rotate(85deg) brightness(126%) contrast(117%);
+    }
+
+    70% {
+        filter: invert(47%) sepia(100%) saturate(1762%) hue-rotate(85deg) brightness(126%) contrast(117%);
+    }
+
+    84% {
+        filter: invert(19%) sepia(84%) saturate(3262%) hue-rotate(239deg) brightness(107%) contrast(100%);
+    }
+
+    100% {
+        filter: invert(13%) sepia(100%) saturate(6755%) hue-rotate(269deg) brightness(104%) contrast(132%);
+    }
+
+}
+
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg) scale(0.9);
+        box-shadow: 0 0 0 0 rgba(255, 12, 12, 0.367);
+
+    }
+
+    25% {
+        transform: rotate(15deg) scale(1);
+        box-shadow: 0 0 0 10px rgba(233, 28, 28, 0);
+    }
+
+    50% {
+        transform: rotate(0deg) scale(0.9);
+        box-shadow: 0 0 0 0 rgba(255, 12, 12, 0.387);
+    }
+
+    75% {
+        transform: rotate(-15deg) scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 12, 12, 0.387);
+    }
+
+    100% {
+        transform: rotate(0deg) scale(0.9);
+        box-shadow: 0 0 0 0 rgba(255, 12, 12, 0.387);
+    }
+}
+
+.setting {
+    border-radius: 20px;
+}
+
+.activeImage {
+    animation-timing-function: linear;
+    animation-duration: 8s;
+    animation-name: rainbowImage;
+    animation-iteration-count: infinite;
+}
+
+.setting:hover {
+    animation-timing-function: linear;
+    animation-duration: 1.5s;
+    animation-name: rotate;
+    animation-iteration-count: infinite;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: fit-content;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555151;
+}
+
+
+.product-item-custom {
+    border: 1px solid rgb(196, 196, 196);
+    margin-bottom: 30px;
+}
+
+.product-item-custom .product-format {
+    padding: 30px;
+    position: relative;
+}
+
+.product-item-custom img {
+    overflow: hidden;
+    height: 400px;
+    width: auto;
+}
+
+.product-item-custom .product-format h4 {
+    font-size: 17px;
+    color: #1a6692;
+    margin-bottom: 20px;
+}
+
+.product-item-custom .product-format h6 {
+    font-size: 18px;
+    color: #121212;
+}
+
+.product-item-custom .product-format p {
+    margin-bottom: 20px;
+}
+
+.product-item-custom .product-format ul li {
+    display: inline-block;
+}
+
+.product-item-custom .product-format ul li i {
+    color: #f33f3f;
+    font-size: 14px;
+}
+
+.product-item-custom .product-format span {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    font-size: 13px;
+    color: #f33f3f;
+    font-weight: 500;
+}
+
+.review-header>* {
+    margin: auto 0px auto 0px;
+    padding: 10px;
+}
+
+.review-container {
+    border: 1px solid #eee;
+    margin-bottom: 30px;
+}
+
+.review-container div:not(:first-of-type) {
+    margin: 15px;
+}
+
+.review-container div:first-child {
+    background-color: #f8f4f4;
+    height: 25px;
+}
+
+.review-container ul li i {
+
+    font-size: 14px;
+}
+
+.review-container ul li {
+    display: inline-block;
+}
+
+.redstar {
+    color: #f33f3f;
+}
+
+.darkstar {
+    color: #5a5a5a !important;
+}
+
+.star-rating {
+    margin: 25px 0 0px;
+    font-size: 0;
+    white-space: nowrap;
+    display: inline-block;
+    width: 175px;
+    height: 35px;
+    overflow: hidden;
+    position: relative;
+    background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cG9seWdvbiBmaWxsPSIjREREREREIiBwb2ludHM9IjEwLDAgMTMuMDksNi41ODMgMjAsNy42MzkgMTUsMTIuNzY0IDE2LjE4LDIwIDEwLDE2LjU4MyAzLjgyLDIwIDUsMTIuNzY0IDAsNy42MzkgNi45MSw2LjU4MyAiLz48L3N2Zz4=');
+    background-size: contain;
+}
+
+.star-rating i {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 20%;
+    z-index: 1;
+    background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cG9seWdvbiBmaWxsPSIjRkZERjg4IiBwb2ludHM9IjEwLDAgMTMuMDksNi41ODMgMjAsNy42MzkgMTUsMTIuNzY0IDE2LjE4LDIwIDEwLDE2LjU4MyAzLjgyLDIwIDUsMTIuNzY0IDAsNy42MzkgNi45MSw2LjU4MyAiLz48L3N2Zz4=');
+    background-size: contain;
+}
+
+.star-rating input {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    opacity: 0;
+    display: inline-block;
+    width: 20%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
+    position: relative;
+}
+
+.star-rating input:hover+i,
+.star-rating input:checked+i {
+    opacity: 1;
+}
+
+.star-rating i~i {
+    width: 40%;
+}
+
+.star-rating i~i~i {
+    width: 60%;
+}
+
+.star-rating i~i~i~i {
+    width: 80%;
+}
+
+.star-rating i~i~i~i~i {
+    width: 100%;
+}
+
+.choice {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 20px;
+    display: block;
+}
+
+span.scale-rating {
+    margin: 5px 0 15px;
+    display: inline-block;
+
+    width: 100%;
+
+}
+
+span.scale-rating>label {
+    position: relative;
+    -webkit-appearance: none;
+    outline: 0 !important;
+    border: 1px solid grey;
+    height: 33px;
+    margin: 0 5px 0 0;
+    width: calc(10% - 7px);
+    float: left;
+    cursor: pointer;
+}
+
+span.scale-rating label {
+    position: relative;
+    -webkit-appearance: none;
+    outline: 0 !important;
+    height: 33px;
+
+    margin: 0 5px 0 0;
+    width: calc(10% - 7px);
+    float: left;
+    cursor: pointer;
+}
+
+span.scale-rating input[type=radio] {
+    position: absolute;
+    -webkit-appearance: none;
+    opacity: 0;
+    outline: 0 !important;
+    /*border-right: 1px solid grey;*/
+    height: 33px;
+
+    margin: 0 5px 0 0;
+
+    width: 100%;
+    float: left;
+    cursor: pointer;
+    z-index: 3;
+}
+
+span.scale-rating label:hover {
+    background: #fddf8d;
+}
+
+span.scale-rating input[type=radio]:last-child {
+    border-right: 0;
+}
+
+span.scale-rating label input[type=radio]:checked~label {
+    -webkit-appearance: none;
+
+    margin: 0;
+    background: #fddf8d;
+}
+
+span.scale-rating label:before {
+    content: attr(value);
+    top: 7px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    vertical-align: middle;
+    z-index: 2;
+}
+
+.customButton {
+    background-color: #f33f3f;
+    color: #fff;
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: 300;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    transition: all 0.3s;
+    border-width: 0px;
+    border-color: transparent;
+}
+
+.customButton:hover {
+    background-color: #121212;
+    color: #fff;
+    cursor: pointer;
+}

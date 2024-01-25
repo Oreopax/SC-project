@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+    rel="stylesheet">
+
+  <title>Login</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="css/fontawesome.css">
+  <link rel="stylesheet" href="css/templatemo-sixteen.css">
+  <link rel="stylesheet" href="css/owl.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+
+  <!-- Bootstrap core JavaScript -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- Additional Scripts -->
+  <script src="js/custom.js"></script>
+  <script src="js/owl.js"></script>
+  <script src="js/slick.js"></script>
+  <script src="js/isotope.js"></script>
+  <script src="js/accordions.js"></script>
+  <script src="js/logincheck.js"></script>
+
+</head>
+
+<body>
+
+  <script>
+    $(document).ready(function () {
+
+      const token = localStorage.getItem('JWT');
+      const userData = localStorage.getItem("User");
+
+      if (userData != null || token != null) window.location.assign(`http://localhost:3001/index.html`)
+      if (userData != null || token != null) return
+
+      $("#signin").click(function () {
+        let password = $("#password").val();
+        let username = $("#username").val();
+        let data = { password, username }
+        // var data = `{"username": "${username}","password": "${password}"}`
+
+        axios.post(`http://localhost:8081/user/login`, data).then(({ data }) => {
+          if (data != null) {
+            $("#feedback").html("Logged in!").removeClass("text-danger").addClass("text-success")
+            localStorage.setItem("JWT", data.token)
+            localStorage.setItem("User", data.UserData);
+            window.location.assign("http://localhost:3001/index.html")
+          } else
+            $("#feedback").html("Wrong Login Credentials Provided")
+        }).catch((err) => $("#feedback").html("Wrong Login Credentials Provided"));
+        return false;
+      });
+
+      $("#register").click(function () {
+        const username = $("#regUsername").val();
+        const email = $("#regEmail").val();
+        const contact = $("#regContact").val();
+        const profile_pic_url = $("#regProfilePic").val();
+        const password = $("#regPassword").val();
+        const comfirmpassword = $("#regComfirmPassword").val();
+
+        if (username == "") $("#regUsername").addClass("is-invalid").removeClass("is-valid")
+        else $("#regUsername").removeClass("is-invalid").addClass("is-valid")
+
+        if (email == "") $("#regEmail").addClass("is-invalid").removeClass("is-valid")
+        else $("#regEmail").removeClass("is-invalid").addClass("is-valid")
+
+        if (contact == "" || isNaN(contact)) $("#regContact").addClass("is-invalid").removeClass("is-valid")
+        else $("#regContact").removeClass("is-invalid").addClass("is-valid")
+
+        if (profile_pic_url == "") $("#regProfilePic").addClass("is-invalid").removeClass("is-valid")
+        else $("#regProfilePic").removeClass("is-invalid").addClass("is-valid")
+
+        if (password == "") $("#regPassword").addClass("is-invalid").removeClass("is-valid")
+        else $("#regPassword").removeClass("is-invalid").addClass("is-valid")
+
+        if (comfirmpassword == "" || comfirmpassword != password) $("#regComfirmPassword").addClass("is-invalid").removeClass("is-valid")
+        else $("#regComfirmPassword").removeClass("is-invalid").addClass("is-valid")
+
+        if (username == "" || email == "" || contact == "" || isNaN(contact) || profile_pic_url == "" || password == "" || comfirmpassword == "" || comfirmpassword != password) return false
+
+        let data = { username, email, contact, password, profile_pic_url }
+        axios.post(`http://localhost:8081/users`, data).then((data) => {
+          console.log(data)
+          $("#regFeedback").removeClass("text-danger").addClass("text-success")
+          $("#regFeedback").html("Success!")
+        }).catch((err) => {
+          let errorMessage = "";
+          if (err.response) {
+            const { data, status, headers } = err.response
+            errorMessage = data.message
+          } else {
+            errorMessage = "Error!"
+          }
+          $("#regFeedback").addClass("text-danger").removeClass("text-success")
+          $("#regFeedback").html(errorMessage)
+        });
+
+        return false
+      });
+
+    });
+  </script>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="preloader">
+    <div class="jumper">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- Header -->
+  <header class="">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <h2>Singapore <em>Polytechnic</em></h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+              <a class="nav-link" href="index.html">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="products.html">Our Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="register.html">Register</a>
+            </li>
+            <li class="nav-item" id="admin">
+              <a class="nav-link" href="admin.html" id="login">Admin</a>
+            </li>
+            <li class="nav-item active activeSpecial" id="logincontainer">
+              <a class="nav-link" href="login.html" id="login">Login</a>
+            </li>
+            <li class="nav-item" id="logoutcontainer">
+              <a class="nav-link" href="" id="logout">Log out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <a style="position: relative;bottom: 10px; right: 55px;" href="userprofile.html" id="userprofile">
+        <img class="setting" src="images/setting.png" width="20px" height="20px">
+      </a>
+
+      <a style="position: relative;bottom: 10px; right: 25px;" href="cart.html" id="cart">
+        <img class="setting" src="images/cart.png" width="22px" height="22px">
+      </a>
+
+    </nav>
+  </header>
+
+  <!-- Page Content -->
+  <div class="page-heading contact-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-content">
+            <h4>Login</h4>
+            <h2>Let's get started!</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <form action="" class="product-item-custom p-4" id="signInForm">
+      <h4>Sign in</h4>
+      <hr>
+
+      <div class="row mt-4">
+
+        <div class="col-12">
+          <p class="center align-content-center text-danger" id="feedback" style="margin-top: -10px;"></p>
+        </div>
+
+        <div class="col">
+          <input placeholder="Username" type="text" class="form-control" id="username">
+        </div>
+
+        <div class="col">
+          <input placeholder="Password" type="password" class="form-control" id="password">
+        </div>
+
+        <div class="col-12 mt-4">
+          <button type="submit" class="customButton" id="signin">Sign
+            in</button>
+        </div>
+
+      </div>
+    </form>
+
+    <form action="" class="product-item-custom p-4" id="registerForm">
+      <h4>Register</h4>
+      <hr>
+
+      <div class="row mt-4">
+
+        <div class="col-12">
+          <p class="center align-content-center text-danger" id="regFeedback" style="margin-top: -10px;"></p>
+        </div>
+
+        <div class="col-6">
+          <div class="form-group m-0 p-0">
+            <input placeholder="Username" type="text" class="form-control " id="regUsername">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback">Please choose a unique username</div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="form-group m-0 p-0">
+            <input placeholder="Email" type="text" class="form-control " id="regEmail">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback">Please choose a unique email</div>
+          </div>
+        </div>
+
+        <div class="col-6 mt-4">
+          <div class="form-group m-0 p-0">
+            <input placeholder="Contact" type="text" class="form-control " id="regContact">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback">Please enter contact number</div>
+          </div>
+        </div>
+
+        <div class="col-6 mt-4">
+          <div class="form-group m-0 p-0">
+            <input placeholder="Profile Picture URL" type="text" class="form-control " id="regProfilePic">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback">Please enter profile picture url</div>
+          </div>
+        </div>
+
+        <div class="col-6 mt-4">
+          <div class="form-group m-0 p-0">
+            <input placeholder="Password" type="password" class="form-control " id="regPassword">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback">Please enter password</div>
+          </div>
+        </div>
+
+        <div class="col-6 mt-4">
+          <div class="form-group m-0 p-0">
+            <input placeholder="Comfirm Password" type="password" class="form-control " id="regComfirmPassword">
+            <div class="valid-feedback">Looks good</div>
+            <div class="invalid-feedback">Please re-enter password</div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-4">
+          <button type="submit" class="customButton" id="register">Register</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="inner-content">
+            <p>Copyright &copy; </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

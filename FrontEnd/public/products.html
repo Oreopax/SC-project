@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+    rel="stylesheet">
+
+  <title>Product</title>
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="css/fontawesome.css">
+  <link rel="stylesheet" href="css/templatemo-sixteen.css">
+  <link rel="stylesheet" href="css/owl.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+
+  <!-- Bootstrap core JavaScript -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- Additional Scripts -->
+  <script src="js/custom.js"></script>
+  <script src="js/owl.js"></script>
+  <script src="js/slick.js"></script>
+  <script src="js/isotope.js"></script>
+  <script src="js/accordions.js"></script>
+  <script src="js/logincheck.js"></script>
+
+</head>
+
+<body>
+
+  <script>
+    $(document).ready(function () {
+
+      let searchParams = new URLSearchParams(window.location.search)
+      let getProductUrl = "http://localhost:8081/product/";
+      let productid = searchParams.get("productid")
+      let edit = searchParams.get("edit")
+      const token = localStorage.getItem('JWT');
+
+     
+      const productDiv = (dropDownBrand) => {
+
+        let divProduct = "";
+        axios.get(getProductUrl).then(({ data: productData }) => {
+          axios.get(`http://localhost:8081/discount/`).then(({ data: discountData }) => {
+
+            productData.forEach((product) => {
+
+              let userInput = $("#SearchBox").val().toLowerCase();
+              let brand = dropDownBrand == undefined ? product.brand : dropDownBrand
+              let { categoryname, name, price, description, reviewcount, imagepath, rating, productid, discountid } = product
+              let halfstar = `<li> <i class="fa fa-star-half"></i><i class="fa fa-star-half darkstar" style="transform: scaleX(-1); position: relative; right: 2px;"></i></li> `
+              let stars = `<li> <i class="fa fa-star"></i></li> `
+              let darkstar = `<li> <i class="fa fa-star darkstar" ></i></li> `
+              let numOfStar = Math.floor(rating);
+              let numOfHalf = (Math.round(rating) - Math.floor(rating)) > 0 ? 1 : 0;
+              let numOfDarkStar = 5 - Math.round(rating);
+              let showUser = false;
+
+              const discount = (product) => {
+                let temp = { isDiscounted: false, discounted: product.price, original: product.price, discount_percentage: 0, ...discount }
+                discountData.forEach((discount) => {
+                  if (product.productid == discount.productid) {
+                    let startDate = new Date(discount.start_at)
+                    let endDate = new Date(discount.end_at)
+                    if (new Date() > startDate && new Date() < endDate)
+                      temp = { isDiscounted: true, discounted: ((price / 100) * (100 - discount.discount_percentage)).toFixed(2), original: product.price, ...discount }
+                    else
+                      temp = { isDiscounted: false, discounted: product.price, original: product.price, ...discount }
+                  }
+                });
+                return temp
+              }
+              if (name.toLowerCase().indexOf(userInput) > -1 || brand.toLowerCase().indexOf(userInput) > -1 || categoryname.toLowerCase().indexOf(userInput) > -1)
+                divProduct += `
+                    <div class="col-md-4">
+                      <div class="product-item" style="height: 410px">
+                        <a href="http://localhost:3001/products.html?productid=${productid}"><img src="${imagepath != null ? " http://localhost:8081/" + imagepath : null}" alt="" style="height: 100px;width: auto;" class="rounded mx-auto d-block m-5"></a>
+                        <div class="down-content">
+                          <a href="http://localhost:3001/products.html?productid=${productid}">
+                            <h4>${name.length > 14 ? name.substring(0, 14) + "<br>" + name.substring(14, name.length) : name}</h4>
+                          </a>
+                            <h6>$${discount(product).isDiscounted ? `<s>${price}</s><br>$${discount(product).discounted}` : price}</h6>
+                          <p>${description.length > 75 ? description.slice(0, 75).concat(`<a href="${`http://localhost:3001/products.html?productid=${productid}`}" class="link-primary"> . . . find out more
+            </a>`) : description}</p>
+                          <ul class="m-0">
+                            ${stars.repeat(numOfStar)}
+                            ${halfstar.repeat(numOfHalf)}
+                            ${reviewcount > 0 ? numOfDarkStar < 0 ? "" : darkstar.repeat(numOfDarkStar) : "<br>"}
+                          </ul>
+                          <a href="http://localhost:3001/products.html?productid=${productid}"><span>Reviews (${reviewcount})</span></a>
+                        </div>
+                      </div>
+                    </div>
+                    `
+              $("#products").empty();
+              $("#products").html(divProduct);
+            });
+          }).catch(err => window.alert("Error occured..."));
+        }).catch(err => window.alert("Error occured..."));
+
+      }
+
+      //Check if there is productid param
+      if (searchParams.has("productid")) {
+
+        //if productid param exist, clear the container and search form
+        $("#container").empty();
+        $("#SearchForm").empty();
+
+        //Get productid product and append in container (Get product)
+        $.ajax({
+          url: `http://localhost:8081/product/${productid}`,
+          type: "GET",
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data, textStatus, xhr) {
+
+            let divProduct = "";
+            if (data != null) {
+
+              //If no product
+              if (data.length == 0)
+                divProduct += `<h4 class="text-center p-5">Product not found</h4>`
+
+              //If product exist
+              else {
+
+                let product = data[0];
+                let { name, price, description, reviewcount, imagepath, rating, brand, productid, categoryname, categoryid } = product
+
+                axios.get(`http://localhost:8081/product/${productid}/image`).then(({ data: images }) => {
+                  axios.get(`http://localhost:8081/discount/`).then(({ data: discountData }) => {
+                    axios.get(`http://localhost:8081/product/${productid}/reviews`).then(({ data: reviewData }) => {
+
+                      //Check if param edit is true (Edit product for admin)
+                      if (edit == "true") {
+
+                        //Check if user is logged in
+                        let userData = localStorage.getItem("User");
+                        if (userData == null) window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                        if (userData == null) return
+
+                        const { userid, type } = JSON.parse(userData)[0]
+
+                        //Check if user is admin
+                        if (type.toLowerCase() != "admin") window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                        if (type.toLowerCase() != "admin") return
+
+                        const isAuthorized = () => {
+                          axios.post(`http://localhost:8081/user/isloggedin`, { userid, type }, {
+                            headers: { 'authorization': 'Bearer ' + token }
+                          }).then(({ data }) => {
+                            if (data) {
+                              let { userid, type } = data
+                              if (type.toLowerCase() != "admin")
+                                window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                            }
+                          }).catch((err) => {
+                            window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                          });
+                        }
+
+                        const editProduct = () => {
+                          $(document).on("click", "#prodEdit", function (e) {
+                            e.preventDefault()
+                            const name = $("#prodName").val()
+                            const description = $("#prodDescription").val()
+                            const brand = $("#prodBrand").val()
+                            const price = $("#prodPrice").val()
+                            const categoryid = $("#prodCat").val()
+
+                            if (name == "") $("#prodName").addClass("is-invalid").removeClass("is-valid")
+                            else $("#prodName").removeClass("is-invalid").addClass("is-valid")
+
+                            if (description == "") $("#prodDescription").addClass("is-invalid").removeClass("is-valid")
+                            else $("#prodDescription").removeClass("is-invalid").addClass("is-valid")
+
+                            if (brand == "") $("#prodBrand").addClass("is-invalid").removeClass("is-valid")
+                            else $("#prodBrand").removeClass("is-invalid").addClass("is-valid")
+
+                            if (price == "" || isNaN(price)) $("#prodPrice").addClass("is-invalid").removeClass("is-valid")
+                            else $("#prodPrice").removeClass("is-invalid").addClass("is-valid")
+
+                            if (categoryid == "" || isNaN(categoryid)) $("#prodCat").addClass("is-invalid").removeClass("is-valid")
+                            else $("#prodCat").removeClass("is-invalid").addClass("is-valid")
+
+                            let data = { name, description, categoryid, brand, price }
+
+                            axios.put(`http://localhost:8081/product/${productid}`, data, {
+                              headers: { 'authorization': 'Bearer ' + token }
+                            }).then((data) => {
+                              $("#prodAddFeedback").addClass("text-success").removeClass("text-danger")
+                              $("#prodAddFeedback").html("Product successfully edited")
+                            }).catch((err) => {
+                              $("#prodAddFeedback").addClass("text-danger").removeClass("text-success")
+                              $("#prodAddFeedback").html("Error!")
+                            });
+                          })
+                        }
+
+                        const addImage = () => {
+                          $(document).on("click", "#prodImageAdd", function (e) {
+                            e.preventDefault()
+                            const file = $('#prodImage').prop('files')[0];
+
+                            if (file == undefined) $("#prodImage").addClass("is-invalid").removeClass("is-valid")
+                            else $("#prodImage").removeClass("is-invalid").addClass("is-valid")
+
+                            let dataImage = new FormData()
+                            dataImage.append("image", file)
+
+                            axios.post(`http://localhost:8081/product/${productid}/image`, dataImage, {
+                              headers: { 'authorization': 'Bearer ' + token }
+                            }).then((data) => {
+                              if (data != null) {
+                                $('#prodImage').removeProp('files')
+                                $('#fileLabel').html('Choose file')
+
+                                $("#prodAddImageFeedback").addClass("text-success").removeClass("text-danger")
+                                $("#prodAddImageFeedback").html("Product successfully added")
+                              }
+
+                            }).catch((err) => {
+                              let errorMessage = "";
+                              if (err.response) {
+                                const { data, status, headers } = err.response
+                                errorMessage = data.message
+                              } else {
+                                errorMessage = "Error!"
+                              }
+                              $("#prodAddImageFeedback").addClass("text-danger").removeClass("text-success")
+                              $("#prodAddImageFeedback").html(errorMessage)
+                            });
+
+                          })
+                        }
+
+                        const backButton = () => {
+                          $(document).on("click", "#back", function (e) {
+                            e.preventDefault()
+                            window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                          })
+                        }
+
+                        const deleteButton = () => {
+                          $(document).on("input", "#prodDeleteComfirmation", (e) => {
+                            if ($("#prodDeleteComfirmation").val().toLowerCase() == "delete") {
+                              $("#prodDelete").prop("disabled", false)
+                              $("#prodDelete").addClass("btn-outline-danger").removeClass("btn-outline-secondary")
+                            }
+                            else {
+                              $("#prodDelete").prop("disabled", true)
+                              $("#prodDelete").addClass("btn-outline-secondary").removeClass("btn-outline-danger")
+                            }
+                          })
+                        }
+
+                        const deleteProduct = () => {
+                          $(document).on("click", "#prodDelete", function (e) {
+                            e.preventDefault()
+                            axios.delete(`http://localhost:8081/product/${productid}`, {
+                              headers: { 'authorization': 'Bearer ' + token }
+                            }).then((data) => {
+                              window.alert("Successfully deleted")
+                              window.location.assign("http://localhost:3001/products.html")
+                            }).catch((err) => {
+                              window.alert("Error Deleting")
+                            });
+                          })
+                        }
+
+                        const loadForm = () => {
+                          axios.get(`http://localhost:8081/category`).then(({ data }) => {
+                            let divCatDropdown = ""
+                            if (data != null) {
+                              data.forEach(({ categoryid: catid, category, description }) => {
+                                divCatDropdown += `<option value="${catid}" ${catid == categoryid ? "selected" : ""}>${category}</option>`
+                              });
+                            } else {
+                              window.alert("Error occured...")
+                            }
+                            $("#prodCat").append(divCatDropdown);
+                          }).catch((err) => { console.log(err) });
+                          divProduct += `
+                                  <!-- EDIT PRODUCT FORM -->
+                    <form action="" class="product-item-custom mt-3" id="prodForm">
+                      <h2 class="p-4 pb-0 m-0">Edit Product</h2>
+                      <div class="row m-2">
+
+                        <!-- LEFT SIDE OF EDIT PRODUCT -->
+                        <div class="col">
+
+                          <!-- CATEGORY -->
+                          <div class="form-group">
+                            <label for="" class="form-label">Category</label>
+                            <select class="custom-select" id="prodCat" required >
+                              <option value="">Category</option>
+                            </select>
+                            <div class="valid-feedback">Looks good</div>
+                            <div class="invalid-feedback">Please select a category</div>
+                          </div>
+                          <!-- CATEGORY END -->
+
+                          <!-- BRAND -->
+                          <div class="mb-3">
+                            <label for="prodBrand" class="form-label">Brand</label>
+                            <div class="input-group">
+                              <input placeholder="Product Brand" type="text" class="form-control " id="prodBrand" value="${brand}">
+                              <div class="valid-feedback">Looks good</div>
+                              <div class="invalid-feedback"> Please choose a valid brand. </div>
+                            </div>
+                          </div>
+                          <!-- BRAND END -->
+
+
+                        </div>
+                        <!-- LEFT SIDE OF EDIT PRODUCT END -->
+
+                        <!-- RIGHT SIDE OF EDIT PRODUCT -->
+                        <div class="col">
+
+                          <!-- NAME -->
+                          <div class="mb-3">
+                            <label for="prodName" class="form-label">Name</label>
+                            <div class="input-group">
+                              <input placeholder="Product Name" type="text" class="form-control " id="prodName" value="${name}">
+                              <div class="valid-feedback">Looks good</div>
+                              <div class="invalid-feedback"> Please choose a unique and valid product name. </div>
+                            </div>
+                          </div>
+                          <!-- NAME END -->
+
+                          <!-- PRICE -->
+                          <label for="prodPrice" class="form-label">Price</label>
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">$</span>
+                            </div>
+                            <input placeholder="Product Price" type="text" id="prodPrice" class="form-control"
+                              aria-label="Amount (to the nearest dollar)"  value="${price}">
+                            <div class="valid-feedback">Looks good</div>
+                            <div class="invalid-feedback"> Please choose a valid price. </div>
+                          </div>
+                          <!-- PRICE END -->
+
+
+                        </div>
+                        <!-- DESCRIPTION -->
+                          <div class="form-group col-12">
+                            <label for="prodDescription">Description</label>
+                            <textarea placeholder="Product description" class="form-control" id="prodDescription" rows="1" >${description}</textarea>
+                            <div class="valid-feedback">Looks good</div>
+                            <div class="invalid-feedback"> Please add description. </div>
+                          </div>
+                          <!-- DESCRIPTION END -->
+                        <!-- RIGHT SIDE OF EDIT PRODUCT END -->
+
+                      </div>
+
+                      <div class="row  m-2 py-2 pt-4">
+                        <div class="col">
+                          <h3 id="prodAddFeedback"></h3>
+                        </div>
+                        <div class="col d-grid d-flex justify-content-end">
+                          <button type="submit" class="btn btn-outline-primary" id="prodEdit">Edit Product</button>
+                        </div>
+                      </div>
+
+                    </form>
+
+
+                    <form action="" class="product-item-custom mt-3" id="prodForm">
+                      <h2 class="p-4 pb-0 m-0">Add Product Image</h2>
+                      <div class="row m-2">
+                        <div class="col">
+                    <!-- IMAGE UPLOAD -->
+                          <label for="customFile" class="form-label">Product Image</label>
+                          <div class="custom-file input-group">
+                            <input type="file" class="custom-file-input" id="prodImage" placeholder="test" accept=".png,.jpg">
+                            <label class="custom-file-label" for="customFile" id="fileLabel">Choose file</label>
+                            <div class="valid-feedback">Looks good</div>
+                            <div class="invalid-feedback">Please Select Product Image</div>
+                          </div>
+                          </div>
+                          <!-- IMAGE END -->
+                    <!-- EDIT PRODUCT FORM END -->
+                    </div>
+                    <div class="row m-2 py-2 pt-4">
+                        <div class="col">
+                          <h3 id="prodAddImageFeedback"></h3>
+                        </div>
+                        <div class="col d-grid d-flex justify-content-end">
+                          <button type="submit" class="btn btn-outline-primary" id="prodImageAdd">Add Image</button>
+                        </div>
+                      </div>
+                    </form>
+
+                    <form action="" class="product-item-custom mt-3" id="prodDeleteForm">
+                      <h2 class="p-4 pb-0 m-0 text-danger">DELETE PRODUCT (${name})</h2>
+                      <div class="row m-2">
+                        <div class="col">
+                          <div class="mb-3">
+                            <label for="prodBrand" class="form-label">Type 'DELETE' to unlock the delete button</label>
+                            <div class="input-group">
+                              <input placeholder="DELETE" type="text" class="form-control" id="prodDeleteComfirmation" >
+                            </div>
+                          </div>
+                          </div>
+                    <!-- EDIT PRODUCT FORM END -->
+                    </div>
+                    <div class="row m-2 py-2 pt-4">
+                        <div class="col">
+                          <h3 id="prodAddImageFeedback"></h3>
+                        </div>
+                        <div class="col d-grid d-flex justify-content-end">
+                          <button type="submit" class="btn btn-outline-secondary" disabled id="prodDelete">Comfirm Delete</button>
+                        </div>
+                      </div>
+                    </form>
+
+                    <div class="col d-grid d-flex justify-content-end">
+                          <button type="submit" class="btn btn-primary" id="back">Back</button>
+                        </div>
+                    `
+                        }
+
+                        const updateImage = () => {
+                          $(document).on("change", "#prodImage", function (e) {
+                            let file = $('#prodImage').prop('files')[0];
+                            $('#fileLabel').html(file.name)
+                          });
+                        }
+
+                        //Check if user is authorized (admin)
+                        isAuthorized()
+
+                        //Edit product
+                        editProduct()
+
+                        //Add image
+                        addImage()
+
+                        //Back button
+                        backButton()
+
+                        //Delete button
+                        deleteButton()
+
+                        //Delete Product
+                        deleteProduct()
+
+                        //On image upload change fileLabel
+                        updateImage()
+
+                        //loadForm
+                        loadForm()
+
+                      } else {
+
+                        const addToCart = () => {
+                          $(document).on("click", "#addToCart", function (e) {
+                            e.preventDefault()
+                            const discount = (product) => {
+                              let discounts = [];
+                              let temp = { isDiscounted: false, discounted: product.price, original: product.price, ...discount, discounts }
+                              discountData.forEach((discount) => {
+                                if ($("#selectDis").val() == discount.discountid) {
+                                  discounts.push(discount)
+                                  let startDate = new Date(discount.start_at)
+                                  let endDate = new Date(discount.end_at)
+                                  if (new Date() > startDate && new Date() < endDate)
+                                    temp = { isDiscounted: true, discounted: ((price / 100) * (100 - discount.discount_percentage)).toFixed(2), original: product.price, ...discount, discounts }
+                                  else
+                                    temp = { isDiscounted: false, discounted: product.price, original: product.price, ...discount, discounts }
+                                }
+                              });
+                              return temp
+                            }
+
+                            let discountInfo = discount(product);
+
+                            let cart = localStorage.getItem("Cart");
+                            let data = {
+                              productid,
+                              price: discountInfo.isDiscounted ? discountInfo.discounted : price,
+                              quantity: $("#quantity").val(),
+                              discountid: discountInfo.discountid ?? null,
+                              discountPercentage: discountInfo.discount_percentage ?? 0
+                            }
+                            let temp = "";
+                            if (cart == null || cart == "[]" || cart == "null") {
+                              temp = JSON.stringify([data])
+                            } else {
+                              temp = JSON.parse(cart);
+                              temp.push(data)
+                              temp = JSON.stringify(temp)
+                            }
+                            localStorage.setItem("Cart", temp)
+                            window.alert("Added to cart!")
+                          })
+                        }
+
+                        //addToCart
+                        addToCart()
+
+                        let stars = `<li> <i class="fa fa-star"></i></li> `
+                        let halfstar = `<li> <i class="fa fa-star-half"></i><i class="fa fa-star-half darkstar" style="transform: scaleX(-1); position: relative; right: 2px;"></i></li> `
+                        let darkstar = `<li> <i class="fa fa-star darkstar"></i></li> `
+                        let carouselIndicator = (imageNum, isActive) => `<li data-target="#carouselIndicators" data-slide-to="${imageNum}" ${isActive ? 'class="active"' : ""}></li>`
+                        let carouselItem = (imagePath, isActive) => `<div class="carousel-item ${isActive ? "active" : ""}">
+      <img class="rounded mx-auto d-block my-5" src="http://localhost:8081/${imagePath}">
+    </div>`
+                        let numOfStar = Math.floor(rating);
+                        let numOfHalf = (Math.round(rating) - Math.floor(rating)) > 0 ? 1 : 0;
+                        let numOfDarkStar = 5 - Math.round(rating)
+                        const discount = (product) => {
+                          let discounts = [];
+                          let temp = { isDiscounted: false, discounted: product.price, original: product.price, ...discount, discounts }
+                          discountData.forEach((discount) => {
+                            if (product.productid == discount.productid) {
+                              discounts.push(discount)
+                              let startDate = new Date(discount.start_at)
+                              let endDate = new Date(discount.end_at)
+                              if (new Date() > startDate && new Date() < endDate)
+                                temp = { isDiscounted: true, discounted: ((price / 100) * (100 - discount.discount_percentage)).toFixed(2), original: product.price, ...discount, discounts }
+                              else
+                                temp = { isDiscounted: false, discounted: product.price, original: product.price, ...discount, discounts }
+                            }
+                          });
+                          return temp
+                        }
+                        let discountInfo = discount(product);
+                        let discountOption = () => {
+                          let discountProduct = "";
+                          discountInfo.discounts.forEach(({ discount_percentage, discountid }) => {
+                            discountProduct += `<option value="${discountid}">${discount_percentage}%, $${((price / 100) * (100 - discount_percentage)).toFixed(2)}</option>\n`
+                          });
+                          return discountProduct
+                        }
+
+
+                        let isAdmin = false;
+                        let userInfo = localStorage.getItem("User")
+                        if (userInfo != null) isAdmin = JSON.parse(localStorage.getItem("User"))[0].type.toLowerCase() == "admin"
+
+                        divProduct +=
+                          `
+                                  <div class="product-item-custom mt-3 p-3">
+                                      ${isAdmin ? `<a class="m-0 d-grid d-flex justify-content-end" href="${window.location.href}&edit=true" style="margin-top: 30px">
+                                      <img src="images/edit.png" style="width: 15px; height: 15px;">
+                                      </a>` : ""}
+
+                        <div class="row m-2">
+                          <div id="carouselIndicators" class="carousel slide col" data-ride="carousel">
+  <ol class="carousel-indicators">
+`
+                        images.forEach((element, index) => {
+                          divProduct += carouselIndicator(index, index == 0)
+                        })
+                        divProduct += `
+                </ol>
+  <div class="carousel-inner">
+                  `
+                        images.forEach(({ name, path }, index) => {
+                          divProduct += carouselItem(path, index == 0)
+                        })
+
+                        divProduct += `
+                </div>
+  <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+<!--<a href="http://localhost:3001/products.html?productid=${productid}" class="col">
+                            <img
+                              src="${imagepath != null ? "http://localhost:8081/" + imagepath : null}"
+                              alt="" class="rounded mx-auto d-block my-5">
+                          </a> -->
+                          <div class="col product-format">
+                            <a href="http://localhost:3001/products.html?productid=${productid}">
+                              <h4>${name} (${brand})</h4>
+                            </a>
+                             <h3 style=" margin-bottom: 20px;">${categoryname}</h4>
+
+                              <h6>$${discountInfo.isDiscounted ? `<s>${price}</s><br>$${discountInfo.discounted}` : price}</h6>
+                             ${discountInfo.isDiscounted ? ` <h6>${discountInfo.name}</h6>` : ""}
+
+                            <ul class="my-2">
+                              ${stars.repeat(numOfStar)}
+                            ${halfstar.repeat(numOfHalf)}
+                              ${reviewcount > 0 ? numOfDarkStar < 0 ? "" : darkstar.repeat(numOfDarkStar) : "<br>"}
+                            </ul>
+                            <p>${description}</p>
+                           
+                            <form class="d-flex d-grid mb-3">
+                            <input type="number" id="quantity" name="quantity" min="1" max="50" class="mr-2" value="1">
+                            <button type="submit" class="btn btn-primary" id="addToCart" style="height: 38px;">Add To Cart</button>
+                            </form>
+
+                            ${discountInfo.discounts.length > 0 ? `<label for="" class="form-label">Discount</label>
+                            <select class="custom-select mb-5" id="selectDis" required>
+                              ${discountOption()}
+                              
+                            </select>` : ""}
+
+                            <a href="#review" class="pt-3"><span>Reviews (${reviewcount})</span></a>
+                          </div>
+                        </div>
+                      </div> `;
+
+                      }
+
+                      $("#container").append(divProduct);
+                      $("#prodCat").val(categoryid).change()
+
+
+                      if (edit != "true") {
+                        var userInfo = localStorage.getItem("User")
+                        if (userInfo != undefined)
+                          userInfo = JSON.parse(userInfo)[0]
+                        let divProduct = "";
+                        if (reviewData != null) {
+                          divProduct +=
+                            `<div class="section-heading mb-3">
+              <h2>Add Review</h2>
+            </div>
+
+            <div class="d-flex mt-4 mb-0">
+              <div class=" flex-grow-1">
+
+                <textarea placeholder="Review" class="form-control me-5" id="ReviewBox" rows="1"></textarea>
+                </div>
+                <div class="p-2"/>
+                <div class="">
+                <button type="submit" class="btn btn-success" id="Review">Add</button>
+                </div>
+            </div>
+
+            <span class="star-rating mb-3">
+<input type="radio" name="rating" value="1"><i></i>
+<input type="radio" name="rating" value="2"><i></i>
+<input type="radio" name="rating" value="3"><i></i>
+<input type="radio" name="rating" value="4"><i></i>
+<input type="radio" name="rating" value="5"><i></i>
+</span>
+            `
+
+                          for (var i = 0; i < reviewData.length; i++) {
+                            var getReview = reviewData[i];
+                            let redstar = ` <li> <i class="fa fa-star redstar"></i></li> `
+                            let darkstar = `<li> <i class="fa fa-star darkstar"></i></li> `
+                            let { productid, userid, username, rating, review, created_at, reviewid } = getReview
+                            let formatedDate = new Date(created_at).toISOString().slice(0, 19).replace('T', ' ');
+                            let numOfDarkStar = 5 - Math.round(rating);
+                            divProduct +=
+                              `
+                              <div class="review-container" id="review">
+
+                                <div class="review-header row m-0 d-flex" style="height:50px;">
+                                  <h4>${username}</h4>
+                                  <h6>${formatedDate}</h6>
+                                </div>
+
+                                <div>
+                                  <ul class="m-0">
+                                    ${redstar.repeat(Math.round(rating))}
+                                    ${numOfDarkStar < 0 ? "" : darkstar.repeat(numOfDarkStar)}
+                                  </ul>
+                                  <h6 class="flex-grow-1 my-1">${review}</h6>
+                                  <div class="d-grid d-flex justify-content-end">
+                                    ${userid === userInfo?.userid ?? -1 ? `<button type="button" class="btn btn-light text-danger justify-content-end" id="Delete" reviewId="${reviewid}">Delete</button>` :
+                                ``}
+                                    </div >
+                                    
+                                    </div >
+                                    </div >
+                                    `
+
+                            // `<button type="button" class="btn btn-light text-danger justify-content-end">Report this</button>`}
+                          }
+                          $("#container").append(divProduct);
+                        }
+                      }
+
+                    }).catch(err => window.alert("Error occured..."));
+                  }).catch(err => window.alert("Error occured..."));
+                }).catch((err) => console.log(err));
+              }
+            } else {
+              window.alert("Error occured...")
+            }
+
+          },
+          error: function (xhr, textStatus, errorThrown) {
+            window.alert("Error occured...")
+          }
+        })
+
+        $(document).on("click", "#Delete", function () {
+          const reviewid = $(this).attr("reviewId")
+
+          //delete review
+          $.ajax({
+            headers: { "authorization": "Bearer " + token },
+            url: "http://localhost:8081/review/" + reviewid,
+            type: "DELETE",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data, textStatus, xhr) {
+              window.alert("Deleted!")
+              location.reload()
+            },
+            error: function (xhr, textStatus, errorThrown) {
+              console.log(errorThrown)
+              window.alert("Error");
+            }
+          })
+
+        })
+
+        $(document).on("click", "#Review", function () {
+
+          var userInfo = localStorage.getItem("User")
+          let rating = $("input[type=radio]:checked").val();
+          var review = $("#ReviewBox").val();
+
+          if (userInfo == undefined) window.alert("Login to add review!")
+          if (userInfo == undefined) return
+
+          if (review == undefined || review == "") window.alert("Please Write Something!")
+          if (review == undefined || review == "") return
+
+          if (rating == undefined) window.alert("Please Rate!")
+          if (rating == undefined) return
+
+          userInfo = JSON.parse(userInfo)
+          const { userid } = userInfo[0];
+
+          var data = { userid, rating, review }
+          data = JSON.stringify(data)
+
+          $.ajax({
+            headers: { "authorization": "Bearer " + token },
+            url: "http://localhost:8081/product/" + productid + "/review/",
+            type: "POST",
+            data: data,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data, textStatus, xhr) {
+
+              if (data != null) {
+                window.alert("Success")
+                location.reload()
+
+              } else {
+                window.alert("Wrong Login Credentials Provided")
+              }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+              console.log(errorThrown)
+              window.alert("Not Logged In");
+            }
+          })
+
+        })
+
+        //else if product param doesnt exist
+      } else {
+
+        if (searchParams.has("search")) {
+          var search = searchParams.get("search")
+          $("#SearchBox").val(search)
+        }
+        if (searchParams.has("brand")) {
+          var brand = searchParams.get("brand")
+          $("#brandButton").html(brand)
+          getProductUrl = "http://localhost:8081/product/brand/" + brand
+        }
+
+        //Get product
+        productDiv()
+
+        //Load brand drop down
+        $.ajax({
+          url: "http://localhost:8081/product",
+          type: "GET",
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data, textStatus, xhr) {
+
+            var existingBrand = []
+            let divBrandDropDown = ""
+            if (data != null) {
+              for (var i = 0; i < data.length; i++) {
+                var product = data[i];
+                let { name, price, description, reviewcount, imagepath, rating, brand } = product
+                if (existingBrand.indexOf(brand) < 0) {
+                  divBrandDropDown += ` <a class="dropdown-item branddropdown" href = "" >${brand}</a > `
+                  existingBrand.push(brand)
+                }
+              }
+            } else {
+              window.alert("Error occured...")
+            }
+            divBrandDropDown += `<div class="dropdown-divider"> </div>
+                  <a class="dropdown-item branddropdown" href="" >Disable</a>`
+            $("#branddropdown").append(divBrandDropDown);
+          },
+          error: function (xhr, textStatus, errorThrown) {
+            window.alert("Error occured...")
+          }
+        })
+
+        //Handling of brand drop down filter
+        $(document).on('click', '.branddropdown', function (e) {
+          e.preventDefault()
+          let brand = $(this).text()
+          if (brand.toLowerCase() == "disable") {
+            getProductUrl = "http://localhost:8081/product/"
+            $("#brandButton").html("Brand")
+            productDiv()
+          } else {
+            getProductUrl = "http://localhost:8081/product/brand/" + brand
+            $("#brandButton").html(brand)
+            productDiv(brand)
+          }
+          return false
+        });
+
+        //Search
+        $("#Search").click(() => {
+          productDiv()
+          return false
+        })
+      }
+    })
+  </script>
+
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="preloader">
+    <div class="jumper">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- Header -->
+  <header class="">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <h2>Singapore <em>Polytechnic</em></h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active activeSpecial" href="products.html">Our Products</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link href="register.html">Register</a>
+            </li>
+       
+            <li class="nav-item" id="admin">
+              <a class="nav-link" href="admin.html" id="login">Admin</a>
+            </li>
+            <li class="nav-item" id="logincontainer">
+              <a class="nav-link" href="login.html" id="login">Login</a>
+            </li>
+            <li class="nav-item" id="logoutcontainer">
+              <a class="nav-link" href="" id="logout">Log out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <a style="position: relative;bottom: 10px; right: 55px;" href="userprofile.html" id="userprofile">
+        <img class="setting" src="images/setting.png" width="20px" height="20px">
+      </a>
+
+      <a style="position: relative;bottom: 10px; right: 25px;" href="cart.html" id="cart">
+        <img class="setting" src="images/cart.png" width="22px" height="22px">
+      </a>
+
+    </nav>
+  </header>
+
+  <!-- Page Content -->
+  <div class="header-text">
+    <div class="container p-5">
+    </div>
+  </div>
+
+  <div class="container" id="container">
+
+  </div>
+
+  <form action="" class="latest-products m-4" id="SearchForm">
+    <div class="container" id="container">
+
+      <div class="section-heading mb-3">
+        <h2>Latest Products</h2>
+      </div>
+
+      <div class="row mt-4 mb-5 w-100">
+        <div class="col-10">
+          <input class="form-control" type="text" placeholder="Search" id="SearchBox">
+        </div>
+
+        <div class="col-1 ps-0 ms-0">
+          <button type="submit" class="btn btn-success" id="Search">Search</button>
+        </div>
+
+        <div class="col-1">
+          <div class="btn-group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false" id="brandButton">
+              Brand
+            </button>
+            <div class="dropdown-menu" id="branddropdown">
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="row" id="products">
+
+      </div>
+
+    </div>
+  </form>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="inner-content">
+            <p>Copyright &copy; </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

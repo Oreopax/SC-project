@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+    rel="stylesheet">
+
+  <title>Product</title>
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="css/fontawesome.css">
+  <link rel="stylesheet" href="css/templatemo-sixteen.css">
+  <link rel="stylesheet" href="css/owl.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+
+  <!-- Bootstrap core JavaScript -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- Additional Scripts -->
+  <script src="js/custom.js"></script>
+  <script src="js/owl.js"></script>
+  <script src="js/slick.js"></script>
+  <script src="js/isotope.js"></script>
+  <script src="js/accordions.js"></script>
+  <script src="js/logincheck.js"></script>
+
+</head>
+
+<body>
+
+  <script>
+    $(document).ready(function () {
+
+      function getTotal() {
+        let cart = localStorage.getItem("Cart")
+        if (cart == null || cart == "[]" || cart == "null") window.alert("Cart empty")
+        if (cart == null || cart == "[]" || cart == "null") return 0
+
+        cart = JSON.parse(cart)
+        let total = 0;
+        cart.forEach(({ price, quantity }) => {
+          total += (parseFloat(price) * parseFloat(quantity))
+        });
+        return total
+      }
+
+      function loadCart() {
+        $("#cartDiv").empty()
+        let cart = localStorage.getItem("Cart")
+        if (cart == null || cart == "[]" || cart == "null") window.alert("Cart empty")
+        if (cart == null || cart == "[]" || cart == "null") return
+        cart = JSON.parse(cart)
+        $("#cartDiv").empty()
+        $("#total").html("Total: " + getTotal())
+        cart.forEach((item, index) => {
+
+          axios.get(`http://localhost:8081/product/${item.productid}`).then(({ data: productData }) => {
+
+            if (productData == null || productData.length < 1) {
+              window.alert("Product can't be found, clearing cart.")
+              localStorage.removeItem("Cart")
+              window.location.assign("http://localhost:3001/cart.html")
+            }
+            if (productData == null) return
+            const { imagepath, name, categoryname } = productData[0]
+
+            $("#cartDiv").append(`
+                  <div class="product-item-custom mt-4 p-3 row m-0 ">
+
+      <div class="col-2">
+        <img class="rounded mx-auto d-block m-2" src="${imagepath != null ? " http://localhost:8081/" + imagepath : null}" style="height: 100px;width: auto;">
+      </div>
+
+      <div class="col-6 align-self-center">
+        <h6 class="p-0 m-0 font-weight-bold" style="position: relative; left: 2px;">${categoryname}</h6>
+        <h2 class="p-0 m-0">${name} </h2>
+      </div>
+
+      <div class="col-1 d-grid d-flex justify-content-end align-self-center">
+        <input type="number" id="quantity" name="quantity" min="1" max="50" class="mt-2" value="${item.quantity}"  index="${index}">
+      </div>
+
+      <div class="col d-grid d-flex justify-content-start align-self-center">
+        <h4 class="p-0 m-0">x $${item.price}</h4>
+      </div>
+
+      <a class="col-1 d-grid d-flex justify-content-end align-self-center removeItem" id="removeItem" href="#" index="${index}" >
+        <img class="rounded d-block" src="images/close.png" style="width: 20px;height: 20px;" >
+      </a>
+      </div>
+  `)
+          }).catch((err) => console.log(err));
+
+        });
+
+
+
+      }
+
+      function removeItemListener() {
+        $(document).on("click", "#removeItem", function (e) {
+          let cart = localStorage.getItem("Cart")
+          if (cart == null)
+            window.location.assign("http://localhost:3001/cart.html")
+          cart = JSON.parse(cart)
+          const index = $(this).attr("index")
+          cart.splice(index, 1)
+          localStorage.setItem("Cart", JSON.stringify(cart))
+          $("#total").html("Total: " + getTotal())
+          loadCart()
+        })
+      }
+
+      function quantityChangeListener() {
+        $(document).on("change", "#quantity", function (e) {
+          const quantity = $(this).val()
+          const index = $(this).attr("index")
+
+          let cart = localStorage.getItem("Cart")
+          if (cart == null)
+            window.location.assign("http://localhost:3001/cart.html")
+
+          cart = JSON.parse(cart)
+          cart[index].quantity = quantity;
+          localStorage.setItem("Cart", JSON.stringify(cart))
+          $("#total").html("Total: " + getTotal())
+        })
+      }
+
+      function comfirmPurchase() {
+        $(document).on("click", "#checkOut", () => {
+          const total = getTotal().toString()
+          const cart = localStorage.getItem("Cart")
+          const user = localStorage.getItem("User")
+          const token = localStorage.getItem("JWT")
+
+          if (cart == null || cart == "[]" || cart == "null") window.alert("Cart empty!")
+          if (cart == null || cart == "[]" || cart == "null") return
+
+          if (user == null) window.alert("Please log in to purchase!")
+          if (user == null) return
+
+          let data = { total, cart }
+          axios.post(`http://localhost:8081/order/`, data, {
+            headers: { 'authorization': 'Bearer ' + token }
+          }).then(({ data: orderData }) => {
+            if (orderData) {
+              window.alert("Success!")
+              localStorage.removeItem("Cart")
+              $("#empty").html("Empty")
+              $("#checkOutContainer").empty()
+              $("#empty").html("Empty")
+              $("#total").html("")
+              loadCart()
+            }
+          }).catch((err) => {
+            let errorMessage = "";
+            if (err.response) {
+              const { data, status, headers } = err.response
+              errorMessage = data.message
+            } else {
+              errorMessage = "Error!"
+            }
+            window.alert(errorMessage)
+          });
+        })
+      }
+
+      if (localStorage.getItem("Cart") == null || localStorage.getItem("Cart") == "[]" || localStorage.getItem("Cart") == "null") {
+        $("#checkOutContainer").empty()
+        $("#empty").html("Empty")
+      } else {
+        $("#empty").html("")
+        $("#checkOutContainer").empty()
+        $("#checkOutContainer").append(`<button type="button" class="btn btn-primary d-grid  d-flex align-self-center" id="checkOut">Comfirm Purchase</button>`)
+        quantityChangeListener()
+        removeItemListener()
+        comfirmPurchase()
+        loadCart()
+      }
+
+    })
+  </script>
+
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="preloader">
+    <div class="jumper">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- Header -->
+  <header class="">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <h2>Singapore <em>Polytechnic</em></h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="products.html">Our Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="promotion.html">Promotion</a>
+            </li>
+            <li class="nav-item" id="admin">
+              <a class="nav-link" href="admin.html" id="login">Admin</a>
+            </li>
+            <li class="nav-item" id="logincontainer">
+              <a class="nav-link" href="login.html" id="login">Login</a>
+            </li>
+            <li class="nav-item" id="logoutcontainer">
+              <a class="nav-link" href="" id="logout">Log out</a>
+            </li>
+            <li class="nav-item" style="opacity: 0;">
+              <a class="nav-link active activeSpecial">.</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <a style="position: relative;bottom: 10px; right: 55px;" href="userprofile.html" id="userprofile">
+        <img class="setting" src="images/setting.png" width="20px" height="20px">
+      </a>
+
+      <a style="position: relative;bottom: 10px; right: 25px;" href="cart.html" id="cart">
+        <img class="setting activeImage" src="images/cart.png" width="22px" height="22px">
+      </a>
+
+    </nav>
+  </header>
+
+  <!-- Page Content -->
+  <div class="header-text">
+    <div class="container p-5">
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="section-heading mb-3">
+      <h2>Cart</h2>
+    </div>
+    <h4 class="d-flex justify-content-center" id="empty">Empty</h4>
+
+    <div id="cartDiv">
+      <!-- Cart -->
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-10">
+        <h3 class="p-0 m-0" id="total"></h3>
+      </div>
+      <div class="col-2 d-grid d-flex justify-content-end align-content-end" id="checkOutContainer">
+
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="inner-content">
+              <p>Copyright &copy; </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+</body>
+
+</html>

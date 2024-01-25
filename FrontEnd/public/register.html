@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+		rel="stylesheet">
+
+	<title>Register</title>
+
+	<!-- Additional CSS Files -->
+	<link rel="stylesheet" href="css/fontawesome.css">
+	<link rel="stylesheet" href="css/templatemo-sixteen.css">
+	<link rel="stylesheet" href="css/owl.css">
+	<link rel="stylesheet" href="css/stylesheet.css">
+
+	<!-- Bootstrap core JavaScript -->
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<!-- Additional Scripts -->
+	<script src="js/custom.js"></script>
+	<script src="js/owl.js"></script>
+	<script src="js/slick.js"></script>
+	<script src="js/isotope.js"></script>
+	<script src="js/accordions.js"></script>
+	<script src="js/logincheck.js"></script>
+
+</head>
+
+<body>
+	<!--================ Start Header Menu Area =================-->
+	<header class="header_area">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light">
+				<div class="container">
+					<button class="navbar-toggler" type="button" data-toggle="collapse"
+						data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto mr-auto">
+
+							<li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+							<li class="nav-item"><a class="nav-link" href="./login.html">Login</a></li>
+							<li class="nav-item submenu dropdown" id="Admin"></li>
+						</ul>
+
+
+					</div>
+				</div>
+			</nav>
+		</div>
+	</header>
+	<!--================ End Header Menu Area =================-->
+
+	<!-- ================ start banner area ================= -->
+
+	<section class="blog-banner-area">
+		<div class="container h-100">
+			<div class="blog-banner">
+				<div class="text-center">
+					<h1>Register</h1>
+					<nav aria-label="breadcrumb" class="banner-breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Register</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- ================ end banner area ================= -->
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area section-margin">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<div class="hover">
+							<h4>Already have an account?</h4>
+
+							<a class="button button-account" href="login.html">Login Now</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner register_form_inner">
+						<h3>Create an account</h3>
+						<form class="row login_form" action="#/" id="register_form">
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="name" placeholder="Username"
+									onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="email" class="form-control" id="email" name="email"
+									placeholder="Email Address" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Email Address'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="number" class="form-control" id="contact" name="contact"
+									placeholder="Contact" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Contact'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="password" name="password"
+									placeholder="Password" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Password'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+									placeholder="Confirm Password" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Confirm Password'">
+							</div>
+
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="button button-register w-100"
+									style="border-radius: 10em;">Register</button>
+							</div>
+						</form>
+
+						<div id="message"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+	
+	<script>
+		$("#register_form").submit((event) => {
+			// prevent page reload
+			event.preventDefault();
+			const name = $("#name").val();
+			const contact = $("#contact").val();
+			const email = $("#email").val();
+			const confirmPassword = $("#confirmPassword").val();
+			const password = $("#password").val();
+			if (!name || !contact || !email || !confirmPassword || !password) alert("Please do not leave empty!")
+			else if (confirmPassword != password) alert("The passwords are not match!Please enter again.")
+			else {
+				fetch(`http://localhost:8081/users`, {
+					method: "POST",
+					body: JSON.stringify({
+						username: name,
+						contact: contact,
+						email: email,
+						password: password,
+
+					}),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				}).then((res) => {
+					if (res.status == 422)
+						alert("The new username OR new email provided already exists")
+					// res over here has no relation to express.js requests and response
+					// res.ok is a boolean to tell if the request is successful
+
+					console.log(res);
+
+					if (!res.ok) {
+						// If not successful, send the status code back (res.status is status code)
+						throw new Error(res.status)
+					}
+
+					// We return res.json() because it converts the body into a readable json object, we do this if the error above doesn't hit
+					return res.json();
+				}).then(data => {
+
+					console.log(data);
+					alert("Successfully registered!")
+					var name = $("#name").val();
+
+					$("#message").text("Welcome "+name+".You are now successfully registered as a member and can proceed to login!");
+
+				})
+			}
+		});
+	</script>
+</body>
+
+</html>
