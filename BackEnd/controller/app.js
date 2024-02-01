@@ -24,6 +24,7 @@ const reviewDB = require('../model/review');
 const discountDB = require('../model/discount');
 const productImagesDB = require('../model/productimages');
 var verifyFn = require('../auth/verifyToken');
+var validateFn = require('../validate/validateFn');
 const orderDB = require('../model/orders');
 
 var app = express();
@@ -370,7 +371,7 @@ app.delete('/product/:id', verifyFn.verifyToken, (req, res) => {
 //REVIEW
 
 //Api no. 10 Endpoint: POST /product/:id/review/ | Add review
-app.post('/product/:id/review/', verifyFn.verifyToken, (req, res) => {
+app.post('/product/:id/review/', verifyFn.verifyToken,validateFn.ValidateReview, (req, res) => {
 
     const { userid, rating, review } = req.body;
     reviewDB.addReview(userid, rating, review, req.params.id, (err, results) => {
