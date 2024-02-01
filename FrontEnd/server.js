@@ -1,7 +1,7 @@
 const express = require('express');
 const serveStatic = require('serve-static');
 
-var hostname = "127.0.0.1";
+var hostname = "localhost";
 var port = 3001;
 
 var app = express();

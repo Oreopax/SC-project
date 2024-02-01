@@ -25,7 +25,6 @@ const discountDB = require('../model/discount');
 const productImagesDB = require('../model/productimages');
 var verifyToken = require('../auth/verifyToken.js');
 const orderDB = require('../model/orders');
-const verifyAdmin = require('../auth/verifyToken.js');
 
 var app = express();
 app.options('*', cors());
@@ -87,7 +86,7 @@ app.post('/order', verifyToken, (req, res) => {
 })
 
 //Update product
-app.put('/product/:productid', verifyToken, verifyAdmin, (req, res) => {
+app.put('/product/:productid', verifyToken, (req, res) => {
 
     const { name, description, categoryid, brand, price } = req.body;
 

@@ -1,7 +1,7 @@
 
 
 var app = require('./controller/app')
-var hostname = "127.0.0.1"
+var hostname = "localhost"
 var port = 8081;
 
 app.listen(port, hostname, function () {
