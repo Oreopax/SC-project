@@ -1,5 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const fs = require('fs')
 const path = require('path')
 var cors = require('cors');
@@ -179,35 +181,35 @@ app.post('/user/login', function (req, res) {
 });
 
 //Api no. 1 Endpoint: POST /users/ | Add new user
-app.post('/users', (req, res) => {
 
+app.post('/users', async (req, res) => {
     var { username, email, contact, password, profile_pic_url } = req.body;
 
-    if(!profile_pic_url){
-        profile_pic_url="";
+    if (!profile_pic_url) {
+        profile_pic_url = "";
     }
-    userDB.addNewUser(username, email, contact, password, "Customer", profile_pic_url, (err, results) => {
 
-        if (err) {
+    try {
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-            //Check if name or email is dup"
-            if (err.code == "ER_DUP_ENTRY")
-                res.status(422).json({ message: `The new username OR new email provided already exists.` })
-
-            //Otherwise unknown error
-            else
-                res.status(500).json({ message: "Internal Error" })
-
-        }
-
-        //No error, response with userid
-        else
-            res.status(201).json({ userid: results.insertId,username:username })
-
-    })
-
-})
-
+        userDB.addNewUser(username, email, contact, hashedPassword, "Customer", profile_pic_url, (err, results) => {
+            if (err) {
+                // Check if name or email is duplicate
+                if (err.code == "ER_DUP_ENTRY")
+                    res.status(422).json({ message: `The new username OR new email provided already exists.` })
+                else
+                    res.status(500).json({ message: "Internal Error" })
+            } else {
+                // No error, respond with userid
+                res.status(201).json({ userid: results.insertId, username: username })
+            }
+        });
+    } catch (error) {
+        // Handle potential errors during hashing
+        res.status(500).json({ message: "Error in password hashing" });
+    }
+});
 //Api no. 2 Endpoint: GET /users/ | Get all user
 app.get('/users', (req, res) => {
 

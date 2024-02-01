@@ -7,39 +7,39 @@ var jwt = require('jsonwebtoken');
 const userDB = {
 
   //Add new user to database
-  addNewUser: (username, email, contact, password, type, profile_pic_url, callback) => {
+  addNewUser: (username, email, contact, hashedPassword, type, profile_pic_url, callback) => {
 
-    //Connects
+    // Connects
     var dbConn = db.getConnection();
     dbConn.connect(function (err) {
 
-      //Return error
-      if (err) {
+        // Return error
+        if (err) {
+            return callback(err, null)
+        } else {
 
-        return callback(err, null)
+            // SQL query
+            dbConn.query(`
+                insert into user 
+                (username, email, contact, password, type, profile_pic_url) values
+                (?, ?, ?, ?, ?, ?);`, 
+                [username, email, contact, hashedPassword, type, profile_pic_url], 
+                function (err, results) {
 
-      } else {
+                    // End connection
+                    dbConn.end();
 
-        //Sql query
-        dbConn.query(`
-      insert into user 
-      (username, email, contact, password, type, profile_pic_url) values
-      (?, ?, ?, ?, ?, ?);`, [username, email, contact, password, type, profile_pic_url], function (err, results) {
+                    if (err)
+                        console.log(err)
 
-          //End connection
-          dbConn.end();
+                    return callback(err, results)
+                });
 
-          if (err)
-            console.log(err)
-
-          return callback(err, results)
-        });
-
-      }
+        }
 
     });
+},
 
-  },
 
   //Get all user
   getAllUser: callback => {
