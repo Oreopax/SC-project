@@ -162,23 +162,83 @@ app.get('/product', (req, res) => {
 });
 
 //login
+// app.post('/user/login', function (req, res) {
+//     var username = req.body.username;
+//     var password = req.body.password;
+
+//     userDB.loginUser(username, password, function (err, result, token) {
+//         if (!err) {
+//             res.statusCode = 200;
+//             res.setHeader('Content-Type', 'application/json');
+//             delete result[0]['password'];//clear the password in json data, do not send back to client
+//             console.log(result[0].username + " logged in");
+//             res.json({ success: true, UserData: JSON.stringify(result), token: token, status: 'You are successfully logged in!' });
+//         } else {
+//             res.status(500);
+//             res.send("Error Code: " + err.statusCode);
+//         }
+//     });
+// });
+
 app.post('/user/login', function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
 
-    userDB.loginUser(username, password, function (err, result, token) {
-        if (!err) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            delete result[0]['password'];//clear the password in json data, do not send back to client
-            console.log(result[0].username + " logged in");
-            res.json({ success: true, UserData: JSON.stringify(result), token: token, status: 'You are successfully logged in!' });
-        } else {
-            res.status(500);
-            res.send("Error Code: " + err.statusCode);
+    // Fetch user from the database by username
+    userDB.getUserByUsername(username, function (err, user) {
+        if (err) {
+            res.status(500).send("Error fetching user from database.");
+            return;
         }
+
+        if (!user || user.length === 0) {
+            res.status(401).send("Username or password is incorrect.");
+            return;
+        }
+
+        const userData = user[0];
+
+        if (!password || !userData.password) {
+            res.status(400).send("Invalid request data.");
+            return;
+        }
+
+        // Compare provided password with hashed password
+        bcrypt.compare(password, userData.password, function (err, isMatch) {
+            if (err) {
+                res.status(500).send("Error during password comparison.");
+                return;
+            }
+
+            if (!isMatch) {
+                res.status(401).send("Username or password is incorrect.");
+                return;
+            }
+
+            // Passwords match, call loginUser
+            userDB.loginUser(username, function (err, result, token) {
+                if (err) {
+                    res.status(500).send("Error during login process.");
+                    return;
+                }
+
+                // Remove password from user data before sending response
+                if (result && result[0]) {
+                    delete result[0]['password'];
+                }
+
+                res.status(200).json({
+                    success: true, 
+                    UserData: JSON.stringify(result), 
+                    token: token, 
+                    status: 'You are successfully logged in!'
+                });
+            });
+        });
     });
 });
+
+
 
 //Api no. 1 Endpoint: POST /users/ | Add new user
 
@@ -549,5 +609,6 @@ app.get('/product/cheapest/:categoryid', (req, res) => {
 app.use((req, res, next) => {
     res.status(404).send('404 Not found');
 });
+
 
 module.exports = app;

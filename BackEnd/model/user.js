@@ -162,48 +162,79 @@ const userDB = {
 
   },
 
-  loginUser: function (username, password, callback) {
 
+
+loginUser: function (username, callback) {
     var conn = db.getConnection();
 
     conn.connect(function (err) {
-      if (err) {
-        console.log(err);
-        return callback(err, null);
-      }
-      else {
-        let sql = 'select * from user where username=? and password=?';
-
-        conn.query(sql, [username, password], function (err, result) {
-          conn.end();
-
-          if (err) {
-            console.log("Err: " + err);
+        if (err) {
+            console.log(err);
             return callback(err, null);
-          } else {
+        } else {
+            let sql = 'select * from user where username=?';
 
-            if (result.length == 1) {
-              token = jwt.sign({
-                userid: result[0].userid,
-                type: result[0].type,
-              }, config.key, {
-                expiresIn: 86400 //expires in 24 hrs
-              });
-              return callback(null, result, token);
+            conn.query(sql, [username], function (err, result) {
+                conn.end();
 
-            } else {
+                if (err) {
+                    console.log("Err: " + err);
+                    return callback(err, null);
+                } else {
+                    if (result.length == 1) {
+                        // Assuming the password comparison is done earlier and the user is verified.
+                        // Generate and return the JWT token
+                        let token = jwt.sign({
+                            userid: result[0].userid,
+                            type: result[0].type,
+                        }, config.key, {
+                            expiresIn: 86400 //expires in 24 hrs
+                        });
+                        return callback(null, result, token);
 
-              var err2 = new Error("UserID/Password does not match.");
-              err2.statusCode = 500;
-              return callback(err2, null, null);
-
-            }
-          }
-        });
-
-      }
+                    } else {
+                        var err2 = new Error("User not found.");
+                        err2.statusCode = 404;
+                        return callback(err2, null, null);
+                    }
+                }
+            });
+        }
     });
-  },
+},
+
+  // Get user by username
+getUserByUsername: (username, callback) => {
+
+  // Connects
+  var dbConn = db.getConnection();
+  dbConn.connect(function (err) {
+
+      // Return error
+      if (err) {
+          return callback(err, null);
+      } else {
+
+          // SQL query
+          dbConn.query(`
+          SELECT 
+          u.username, 
+          u.password
+          FROM user u 
+          WHERE u.username = ?;`, [username], function (err, results) {
+
+              // End connection
+              dbConn.end();
+
+              if (err)
+                  console.log(err);
+
+              return callback(err, results);
+          });
+      }
+  });
+},
+
 
 };
 
