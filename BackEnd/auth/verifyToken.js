@@ -28,4 +28,15 @@ function verifyToken(req, res, next) {
     }
 }
 
+function verifyAdmin(req,res,next) {
+    if (req.role === 'Admin') {
+        next();
+    } else {
+        res.status(403);
+        res.send(`{"Message":"Not Authorized as Admin"}`);
+    }
+}
+
+
 module.exports = verifyToken;
+module.exports = verifyAdmin;
