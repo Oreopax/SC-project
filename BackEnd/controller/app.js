@@ -23,7 +23,7 @@ const productDB = require('../model/product');
 const reviewDB = require('../model/review');
 const discountDB = require('../model/discount');
 const productImagesDB = require('../model/productimages');
-var verifyToken = require('../auth/verifyToken.js');
+var verifyFn = require('../auth/verifyToken');
 const orderDB = require('../model/orders');
 
 var app = express();
@@ -38,7 +38,7 @@ app.use(bodyParser.json()); //Chunking for json POST
 app.use(express.static(path.join(__dirname, '../public/')));
 
 //Get if user is logged in with correct token
-app.post('/user/isloggedin', verifyToken, (req, res) => {
+app.post('/user/isloggedin', verifyFn.verifyToken, (req, res) => {
     if (req.body.userid == req.userid && req.body.type == req.type)
         res.status(200).json({
             userid: req.userid,
@@ -49,7 +49,7 @@ app.post('/user/isloggedin', verifyToken, (req, res) => {
 });
 
 //Get order
-app.get('/order/:userid', verifyToken, (req, res) => {
+app.get('/order/:userid', verifyFn.verifyToken, (req, res) => {
 
     orderDB.getOrder(req.userid, (err, results) => {
         if (err)
@@ -63,7 +63,7 @@ app.get('/order/:userid', verifyToken, (req, res) => {
 });
 
 //Add Order
-app.post('/order', verifyToken, (req, res) => {
+app.post('/order', verifyFn.verifyToken, (req, res) => {
 
     const { cart, total } = req.body;
 
@@ -86,7 +86,7 @@ app.post('/order', verifyToken, (req, res) => {
 })
 
 //Update product
-app.put('/product/:productid', verifyToken, (req, res) => {
+app.put('/product/:productid', verifyFn.verifyToken,verifyFn.verifyAdmin, (req, res) => {
 
     const { name, description, categoryid, brand, price } = req.body;
 
@@ -111,7 +111,7 @@ app.put('/product/:productid', verifyToken, (req, res) => {
 
 
 //Delete Review
-app.delete('/review/:reviewid', verifyToken, (req, res) => {
+app.delete('/review/:reviewid', verifyFn.verifyToken, (req, res) => {
 
     reviewDB.deleteReview(req.params.reviewid, req.userid, (err, results) => {
         if (err)
@@ -241,7 +241,7 @@ app.get('/users/:id', (req, res) => {
 });
 
 //Api no. 4 Endpoint: PUT /users/:id/ | Update info user by userid
-app.put('/users/:id', verifyToken, (req, res) => {
+app.put('/users/:id', verifyFn.verifyToken, (req, res) => {
     const { username, email, contact, password, profile_pic_url, oldpassword } = req.body;
 
     userDB.updateUser(username, email, contact, password, req.type, profile_pic_url, req.userid, oldpassword, (err, results) => {
@@ -271,7 +271,7 @@ app.put('/users/:id', verifyToken, (req, res) => {
 //CATEGORY
 
 //Api no. 5 Endpoint: POST /category | Add new category
-app.post('/category', verifyToken, (req, res) => {
+app.post('/category', verifyFn.verifyToken, (req, res) => {
 
     const { category, description } = req.body;
 
@@ -317,7 +317,7 @@ app.get('/category', (req, res) => {
 //PRODUCT
 
 //Api no. 7 Endpoint: POST /product/ | Add new product
-app.post('/product', verifyToken, (req, res) => {
+app.post('/product', verifyFn.verifyToken, (req, res) => {
 
     const { name, description, categoryid, brand, price } = req.body;
 
@@ -352,7 +352,7 @@ app.get('/product/:id', (req, res) => {
 });
 
 //Api no. 9 Endpoint: DELETE /product/:id/ | Delete product from productid 
-app.delete('/product/:id', verifyToken, (req, res) => {
+app.delete('/product/:id', verifyFn.verifyToken, (req, res) => {
 
 
     productDB.deleteProduct(req.params.id, (err, results) => {
@@ -370,7 +370,7 @@ app.delete('/product/:id', verifyToken, (req, res) => {
 //REVIEW
 
 //Api no. 10 Endpoint: POST /product/:id/review/ | Add review
-app.post('/product/:id/review/', verifyToken, (req, res) => {
+app.post('/product/:id/review/', verifyFn.verifyToken, (req, res) => {
 
     const { userid, rating, review } = req.body;
     reviewDB.addReview(userid, rating, review, req.params.id, (err, results) => {
@@ -406,7 +406,7 @@ app.get('/product/:id/reviews', (req, res) => {
 //BONUS REQUIREMENT DISCOUNT
 
 //Api no. 15 Endpoint: POST /product/:id/discount | Add new discount
-app.post('/discount/:productid', verifyToken, (req, res) => {
+app.post('/discount/:productid', verifyFn.verifyToken, (req, res) => {
 
     if (req.type.toLowerCase() != "admin") res.status(403).json({ message: 'Not authorized!' });
     if (req.type.toLowerCase() != "admin") return
@@ -464,7 +464,7 @@ app.get('/discount/:id/', (req, res) => {
 //BONUS REQUIREMENT PRODUCT IMAGE
 
 //Api no. 13 Endpoint: POST /product/:id/image  | Upload product image 
-app.post('/product/:id/image', verifyToken, upload.single('image'), function (req, res) {
+app.post('/product/:id/image', verifyFn.verifyToken, upload.single('image'), function (req, res) {
 
     //Check if there is file
     if (req.file == undefined) {
