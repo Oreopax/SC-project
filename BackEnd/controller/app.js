@@ -318,7 +318,7 @@ app.get('/category', (req, res) => {
 //PRODUCT
 
 //Api no. 7 Endpoint: POST /product/ | Add new product
-app.post('/product', verifyFn.verifyToken, (req, res) => {
+app.post('/product', verifyFn.verifyToken, verifyFn.verifyAdmin, (req, res) => {
 
     const { name, description, categoryid, brand, price } = req.body;
 

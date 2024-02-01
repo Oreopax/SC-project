@@ -3,14 +3,16 @@ const validator = require('validator');
 const validateFn = {
     ValidateRegister : function(req,res,next){
 
-        regexuser = /^[a-zA-Z0-9 ]+$/
+        regexuser= /^[a-zA-Z\d ]+$/
+        regexpassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d ]+$/
+        regexemail = /^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
         var username=req.body.username;
         var email=req.body.email;
-        var role=req.body.role;
+        var contact=req.body.contact;
         var password=req.body.password;
 
-        if (validator.isAlphanumeric(username) && validator.isEmail(email) && (role=='user' || role=='admin') && validator.isAlphanumeric(password) && password.length>7){
+        if (regexuser.test(username) && regexemail.test(email) && validator.isNumeric(contact) && regexpassword.test(password) && password.length>7){
             next();
         }
         else{
