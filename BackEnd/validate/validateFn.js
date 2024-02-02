@@ -16,7 +16,7 @@ const validateFn = {
             next();
         }
         else{
-            res.send(`{"Message":"Validation Failed"}`);
+            res.status(500).json({ message: "Validation Failed" });
         }
     },
     ValidateReview : function(req,res,next){
@@ -29,7 +29,7 @@ const validateFn = {
             next();
         }
         else{
-            res.send(`{"Message":"Validation Failed"}`);
+            res.status(500).json({ message: "Validation Failed" });
         }
     }
 }

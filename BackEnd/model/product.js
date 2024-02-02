@@ -61,8 +61,8 @@ const productDB = {
         left join reviews r on r.productid = p.productid
         left join productimages pi on pi.productid = p.productid 
         left join discount d on d.productid = p.productid 
-        where p.productid = ${productid}
-        GROUP BY p.productid`, [], function (err, results) {
+        where p.productid = ?
+        GROUP BY p.productid`, [productid], function (err, results) {
 
           //End connection
           dbConn.end();

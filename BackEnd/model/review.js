@@ -22,7 +22,7 @@ const reviewDB = {
         dbConn.query(`
         insert into reviews
         (userid, rating, review, productid)
-        values(${userid}, ${rating}, '${review}', ${productid});`, [], function (err, results) {
+        values(?, ?, ?, ?);`, [userid,rating,review,productid], function (err, results) {
 
           //End connection
           dbConn.end();
