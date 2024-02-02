@@ -51,29 +51,29 @@
         $("#admin").hide()
       }
 
-      if (userData == null) window.location.assign(`http://localhost:3001/index.html`)
+      if (userData == null) window.location.assign(`https://localhost:3001/index.html`)
       if (userData == null) return
 
       const { userid, type } = JSON.parse(userData)[0]
-      if (type.toLowerCase() != "admin") window.location.assign(`http://localhost:3001/index.html`)
+      if (type.toLowerCase() != "admin") window.location.assign(`https://localhost:3001/index.html`)
       if (type.toLowerCase() != "admin") return
 
       $("#container").show()
 
-      axios.post(`http://localhost:8081/user/isloggedin`, ({ userid, type }), {
+      axios.post(`https://localhost:8081/user/isloggedin`, ({ userid, type }), {
         headers: { 'authorization': 'Bearer ' + token }
       }).then(({ data }) => {
         if (data) {
           let { userid, type } = data
           if (type.toLowerCase() != "admin")
-            window.location.assign("http://localhost:3001/index.html")
+            window.location.assign("https://localhost:3001/index.html")
         }
       }).catch((err) => {
-        window.location.assign("http://localhost:3001/index.html")
+        window.location.assign("https://localhost:3001/index.html")
       });
 
       //Load category drop down menu
-      axios.get(`http://localhost:8081/category`).then(({ data }) => {
+      axios.get(`https://localhost:8081/category`).then(({ data }) => {
         let divCatDropdown = ""
         if (data != null) {
           data.forEach(({ categoryid, category, description }) => {
@@ -110,7 +110,7 @@
 
         var data = { category, description }
         console.log(data)
-        axios.post(`http://localhost:8081/category`, data, {
+        axios.post(`https://localhost:8081/category`, data, {
           headers: { 'authorization': 'Bearer ' + token }
         }).then((data) => {
           if (data) {
@@ -173,7 +173,7 @@
         //Create product
         $.ajax({
           headers: { 'authorization': 'Bearer ' + token },
-          url: 'http://localhost:8081/product',
+          url: 'https://localhost:8081/product',
           type: 'POST',
           data: data,
           contentType: 'application/json',
@@ -181,7 +181,7 @@
           success: function ({ productid }, textStatus, xhr) {
             if (data != null) {
 
-              axios.post(`http://localhost:8081/product/${productid}/image`, dataImage, {
+              axios.post(`https://localhost:8081/product/${productid}/image`, dataImage, {
                 headers: { "authorization": "Bearer " + token }
               }).then(() => {
                 document.getElementById("prodForm").reset();
@@ -213,7 +213,7 @@
                 $("#prodAddFeedback").addClass("text-danger").removeClass("text-success")
                 $("#prodAddFeedback").html(errorMessage)
 
-                axios.delete(`http://localhost:8081/product/${productid}`, {
+                axios.delete(`https://localhost:8081/product/${productid}`, {
                   headers: { 'authorization': 'Bearer ' + token }
                 }).then((data) => {
                 }).catch((err) => {

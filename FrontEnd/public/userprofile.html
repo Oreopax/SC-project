@@ -46,10 +46,10 @@
       if (userInfo != undefined)
         userId = JSON.parse(userInfo)[0].userid
       else
-        window.location.assign("http://localhost:3001/index.html")
+        window.location.assign("https://localhost:3001/index.html")
 
       function editUser() {
-        axios.get(`http://localhost:8081/users/${userId}`, {
+        axios.get(`https://localhost:8081/users/${userId}`, {
           headers: { 'authorization': 'Bearer ' + token }
         }).then(({ data: userData }) => {
           const { contact, email, profile_pic_url, username } = userData
@@ -97,7 +97,7 @@
 
           let data = { username, email, contact, password, profile_pic_url, oldpassword }
 
-          axios.put(`http://localhost:8081/users/${userId}`, data, {
+          axios.put(`https://localhost:8081/users/${userId}`, data, {
             headers: { 'authorization': 'Bearer ' + token }
           }).then(() => {
             $("#saveFeedback").addClass("text-success").removeClass("text-danger")
@@ -120,13 +120,13 @@
 
 
       function getOrders() {
-        axios.get(`http://localhost:8081/order/${userId}`, {
+        axios.get(`https://localhost:8081/order/${userId}`, {
           headers: { 'authorization': 'Bearer ' + token }
         }).then(({ data: orderData }) => {
 
           if (orderData.length < 1)
             $("#accordion").append(` <h4 class="d-flex justify-content-center" id="empty">Empty</h4>`)
-          axios.get(`http://localhost:8081/product`).then(({ data: allProduct }) => {
+          axios.get(`https://localhost:8081/product`).then(({ data: allProduct }) => {
 
             const getInfo = () => {
               let temp = [];
@@ -148,7 +148,7 @@
                 temp += `
 <div class="card-body row m-0">
             <div class="col-2">
-              <img class="rounded mx-0 d-block m-2" src="${product.imagepath != null ? " http://localhost:8081/" + product.imagepath : null}" style="height: auto;width: 100px;">
+              <img class="rounded mx-0 d-block m-2" src="${product.imagepath != null ? " https://localhost:8081/" + product.imagepath : null}" style="height: auto;width: 100px;">
             </div>
             <div class="col-3 d-grid d-flex justify-content-start align-self-center">
               ${product.name}

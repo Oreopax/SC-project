@@ -17,7 +17,7 @@ $(document).ready(function () {
     $.ajax({
         headers: { "authorization": "Bearer " + token },
         data: data,
-        url: "http://localhost:8081/user/isloggedin",
+        url: "https://localhost:8081/user/isloggedin",
         type: "POST",
         contentType: "application/json",
         dataType: "json",

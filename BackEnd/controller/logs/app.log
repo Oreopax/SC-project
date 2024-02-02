@@ -11,3 +11,211 @@
 {"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
 {"level":"info","message":"GET /product/ - Success"}
 {"level":"info","message":"127.0.0.1 - - [02/Feb/2024:13:26:46 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:06:09 +0000] \"POST /user/isloggedin HTTP/1.1\" 403 42 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:06:09 +0000] \"GET /product/ HTTP/1.1\" 200 5876 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:06:22 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user1"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user1"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:06:28 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /users - User registration attempt for username: user2"}
+{"level":"info","message":"POST /users - Successful user registration for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:11 +0000] \"POST /users HTTP/1.1\" 201 32 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"info","message":"POST /user/login - Successful login for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:23 +0000] \"POST /user/login HTTP/1.1\" 200 472 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:24 +0000] \"POST /user/isloggedin HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:24 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"POST /user/isloggedin HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /product HTTP/1.1\" 200 5876 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /discount/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1642883967139-545684617.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1642884440853-800673003.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1642883738797-437320279.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1642947814139-687514236.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1642951735210-775230483.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1642951813986-573392333.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1643537993805-877823283.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1643541280646-719557417.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1643541518834-635173112.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1643541761674-938138594.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:26 +0000] \"GET /images/product/image-1644053777099-253758651.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /product HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /discount/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1642883967139-545684617.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1642884440853-800673003.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1642883738797-437320279.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1642947814139-687514236.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1642951735210-775230483.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1642951813986-573392333.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1643537993805-877823283.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1643541280646-719557417.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1643541518834-635173112.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1643541761674-938138594.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:31 +0000] \"GET /images/product/image-1644053777099-253758651.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:39 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:47 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:56 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:56 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:57 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:57 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:57 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:57 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:57 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:57 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:58 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:58 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:58 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:58 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:58 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:58 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:59 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:59 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:59 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:59 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:59 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:08:59 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:09:00 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:09:00 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:09:00 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:09:00 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"warn","message":"POST /user/login - Username or password is incorrect for username: user2"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:09:00 +0000] \"POST /user/login HTTP/1.1\" 401 34 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"error","message":"POST /user/login - Error during login process: Your account is temporarily banned."}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:09:29 +0000] \"POST /user/login HTTP/1.1\" 500 27 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user2"}
+{"level":"error","message":"POST /user/login - Error during login process: Your account is temporarily banned."}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:09:31 +0000] \"POST /user/login HTTP/1.1\" 500 27 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /users - User registration attempt for username: user3"}
+{"level":"info","message":"POST /users - Successful user registration for username: user3"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:33 +0000] \"POST /users HTTP/1.1\" 201 32 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user3"}
+{"level":"info","message":"POST /user/login - Successful login for username: user3"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:34 +0000] \"POST /user/login HTTP/1.1\" 200 471 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:35 +0000] \"POST /user/isloggedin HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:35 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:36 +0000] \"POST /user/isloggedin HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:36 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /product HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /discount/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1642883967139-545684617.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1642884440853-800673003.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1642883738797-437320279.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1642947814139-687514236.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1642951735210-775230483.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1642951813986-573392333.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1643537993805-877823283.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1643541280646-719557417.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1643541518834-635173112.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1643541761674-938138594.jpeg HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:37 +0000] \"GET /images/product/image-1644053777099-253758651.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:40 +0000] \"POST /user/isloggedin HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:40 +0000] \"GET /product/14 HTTP/1.1\" 200 287 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:40 +0000] \"GET /product/14/image HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:40 +0000] \"GET /discount/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:40 +0000] \"GET /product/14/reviews HTTP/1.1\" 200 1088 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:40 +0000] \"GET /images/product/image-1642884440853-800673003.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:49 +0000] \"POST /product/14/review/ HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:50 +0000] \"POST /user/isloggedin HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:50 +0000] \"GET /product/14 HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:50 +0000] \"GET /product/14/image HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:50 +0000] \"GET /discount/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:50 +0000] \"GET /product/14/reviews HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:10:50 +0000] \"GET /images/product/image-1642884440853-800673003.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:12:34 +0000] \"GET /product/14 HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:12:34 +0000] \"GET /product/14/image HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:12:34 +0000] \"GET /discount/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:12:34 +0000] \"GET /product/14/reviews HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:12:34 +0000] \"GET /images/product/image-1642884440853-800673003.png HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:12:36 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:14:13:03 +0000] \"POST /users HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"::1 - - [02/Feb/2024:14:28:03 +0000] \"GET /product/ HTTP/1.1\" 200 5876 \"https://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: user3"}
+{"level":"info","message":"POST /user/login - Successful login for username: user3"}
+{"level":"info","message":"::1 - - [02/Feb/2024:14:28:14 +0000] \"POST /user/login HTTP/1.1\" 200 471 \"https://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"::1 - - [02/Feb/2024:14:28:14 +0000] \"POST /user/isloggedin HTTP/1.1\" 200 31 \"https://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"::1 - - [02/Feb/2024:14:28:14 +0000] \"GET /product/ HTTP/1.1\" 200 5876 \"https://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"::1 - - [02/Feb/2024:14:28:17 +0000] \"GET /product/ HTTP/1.1\" 200 5876 \"https://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\""}

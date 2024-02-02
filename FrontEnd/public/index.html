@@ -40,7 +40,7 @@
     $(document).ready(function () {
 
       let brandFilter = ""
-      let getProductUrl = "http://localhost:8081/product/";
+      let getProductUrl = "https://localhost:8081/product/";
       $("#products").empty();
       $.ajax({
         url: getProductUrl,
@@ -81,11 +81,11 @@
         let brand = $(this).text()
 
         if (brand.toLowerCase() == "disable") {
-          getProductUrl = "http://localhost:8081/product/"
+          getProductUrl = "https://localhost:8081/product/"
           brandFilter = ""
           $("#brandButton").html("Brand")
         } else {
-          getProductUrl = "http://localhost:8081/product/brand/" + brand
+          getProductUrl = "https://localhost:8081/product/brand/" + brand
           brandFilter = brand
           $("#brandButton").html(brand)
         }
@@ -96,9 +96,9 @@
       $("#Search").click(function () {
         console.log("POGGER")
         if (brandFilter == "")
-          window.location.assign(`http://localhost:3001/products.html?search=${$("#SearchBox").val()}`)
+          window.location.assign(`https://localhost:3001/products.html?search=${$("#SearchBox").val()}`)
         else
-          window.location.assign(`http://localhost:3001/products.html?search=${$("#SearchBox").val()}&brand=${brandFilter}`)
+          window.location.assign(`https://localhost:3001/products.html?search=${$("#SearchBox").val()}&brand=${brandFilter}`)
         return false
       })
     });

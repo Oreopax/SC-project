@@ -62,12 +62,12 @@
         $("#total").html("Total: " + getTotal())
         cart.forEach((item, index) => {
 
-          axios.get(`http://localhost:8081/product/${item.productid}`).then(({ data: productData }) => {
+          axios.get(`https://localhost:8081/product/${item.productid}`).then(({ data: productData }) => {
 
             if (productData == null || productData.length < 1) {
               window.alert("Product can't be found, clearing cart.")
               localStorage.removeItem("Cart")
-              window.location.assign("http://localhost:3001/cart.html")
+              window.location.assign("https://localhost:3001/cart.html")
             }
             if (productData == null) return
             const { imagepath, name, categoryname } = productData[0]
@@ -76,7 +76,7 @@
                   <div class="product-item-custom mt-4 p-3 row m-0 ">
 
       <div class="col-2">
-        <img class="rounded mx-auto d-block m-2" src="${imagepath != null ? " http://localhost:8081/" + imagepath : null}" style="height: 100px;width: auto;">
+        <img class="rounded mx-auto d-block m-2" src="${imagepath != null ? " https://localhost:8081/" + imagepath : null}" style="height: 100px;width: auto;">
       </div>
 
       <div class="col-6 align-self-center">
@@ -109,7 +109,7 @@
         $(document).on("click", "#removeItem", function (e) {
           let cart = localStorage.getItem("Cart")
           if (cart == null)
-            window.location.assign("http://localhost:3001/cart.html")
+            window.location.assign("https://localhost:3001/cart.html")
           cart = JSON.parse(cart)
           const index = $(this).attr("index")
           cart.splice(index, 1)
@@ -126,7 +126,7 @@
 
           let cart = localStorage.getItem("Cart")
           if (cart == null)
-            window.location.assign("http://localhost:3001/cart.html")
+            window.location.assign("https://localhost:3001/cart.html")
 
           cart = JSON.parse(cart)
           cart[index].quantity = quantity;
@@ -149,7 +149,7 @@
           if (user == null) return
 
           let data = { total, cart }
-          axios.post(`http://localhost:8081/order/`, data, {
+          axios.post(`https://localhost:8081/order/`, data, {
             headers: { 'authorization': 'Bearer ' + token }
           }).then(({ data: orderData }) => {
             if (orderData) {

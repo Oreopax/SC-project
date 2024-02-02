@@ -369,7 +369,7 @@ app.post('/user/login', function (req, res) {
 //Api no. 1 Endpoint: POST /users/ | Add new user
 
 // User Registration
-app.post('/users', async (req, res) => {
+app.post('/users',validateFn.ValidateRegister, async (req, res) => {
     const { username, email, contact, password, profile_pic_url } = req.body;
 
     if (!profile_pic_url) {

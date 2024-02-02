@@ -150,7 +150,7 @@
 			if (!name || !contact || !email || !confirmPassword || !password) alert("Please do not leave empty!")
 			else if (confirmPassword != password) alert("The passwords are not match!Please enter again.")
 			else {
-				fetch(`http://localhost:8081/users`, {
+				fetch(`https://localhost:8081/users`, {
 					method: "POST",
 					body: JSON.stringify({
 						username: name,

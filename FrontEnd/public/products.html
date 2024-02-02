@@ -40,7 +40,7 @@
     $(document).ready(function () {
 
       let searchParams = new URLSearchParams(window.location.search)
-      let getProductUrl = "http://localhost:8081/product/";
+      let getProductUrl = "https://localhost:8081/product/";
       let productid = searchParams.get("productid")
       let edit = searchParams.get("edit")
       const token = localStorage.getItem('JWT');
@@ -50,7 +50,7 @@
 
         let divProduct = "";
         axios.get(getProductUrl).then(({ data: productData }) => {
-          axios.get(`http://localhost:8081/discount/`).then(({ data: discountData }) => {
+          axios.get(`https://localhost:8081/discount/`).then(({ data: discountData }) => {
 
             productData.forEach((product) => {
 
@@ -83,20 +83,20 @@
                 divProduct += `
                     <div class="col-md-4">
                       <div class="product-item" style="height: 410px">
-                        <a href="http://localhost:3001/products.html?productid=${productid}"><img src="${imagepath != null ? " http://localhost:8081/" + imagepath : null}" alt="" style="height: 100px;width: auto;" class="rounded mx-auto d-block m-5"></a>
+                        <a href="https://localhost:3001/products.html?productid=${productid}"><img src="${imagepath != null ? " https://localhost:8081/" + imagepath : null}" alt="" style="height: 100px;width: auto;" class="rounded mx-auto d-block m-5"></a>
                         <div class="down-content">
-                          <a href="http://localhost:3001/products.html?productid=${productid}">
+                          <a href="https://localhost:3001/products.html?productid=${productid}">
                             <h4>${name.length > 14 ? name.substring(0, 14) + "<br>" + name.substring(14, name.length) : name}</h4>
                           </a>
                             <h6>$${discount(product).isDiscounted ? `<s>${price}</s><br>$${discount(product).discounted}` : price}</h6>
-                          <p>${description.length > 75 ? description.slice(0, 75).concat(`<a href="${`http://localhost:3001/products.html?productid=${productid}`}" class="link-primary"> . . . find out more
+                          <p>${description.length > 75 ? description.slice(0, 75).concat(`<a href="${`https://localhost:3001/products.html?productid=${productid}`}" class="link-primary"> . . . find out more
             </a>`) : description}</p>
                           <ul class="m-0">
                             ${stars.repeat(numOfStar)}
                             ${halfstar.repeat(numOfHalf)}
                             ${reviewcount > 0 ? numOfDarkStar < 0 ? "" : darkstar.repeat(numOfDarkStar) : "<br>"}
                           </ul>
-                          <a href="http://localhost:3001/products.html?productid=${productid}"><span>Reviews (${reviewcount})</span></a>
+                          <a href="https://localhost:3001/products.html?productid=${productid}"><span>Reviews (${reviewcount})</span></a>
                         </div>
                       </div>
                     </div>
@@ -118,7 +118,7 @@
 
         //Get productid product and append in container (Get product)
         $.ajax({
-          url: `http://localhost:8081/product/${productid}`,
+          url: `https://localhost:8081/product/${productid}`,
           type: "GET",
           contentType: "application/json",
           dataType: "json",
@@ -137,35 +137,35 @@
                 let product = data[0];
                 let { name, price, description, reviewcount, imagepath, rating, brand, productid, categoryname, categoryid } = product
 
-                axios.get(`http://localhost:8081/product/${productid}/image`).then(({ data: images }) => {
-                  axios.get(`http://localhost:8081/discount/`).then(({ data: discountData }) => {
-                    axios.get(`http://localhost:8081/product/${productid}/reviews`).then(({ data: reviewData }) => {
+                axios.get(`https://localhost:8081/product/${productid}/image`).then(({ data: images }) => {
+                  axios.get(`https://localhost:8081/discount/`).then(({ data: discountData }) => {
+                    axios.get(`https://localhost:8081/product/${productid}/reviews`).then(({ data: reviewData }) => {
 
                       //Check if param edit is true (Edit product for admin)
                       if (edit == "true") {
 
                         //Check if user is logged in
                         let userData = localStorage.getItem("User");
-                        if (userData == null) window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                        if (userData == null) window.location.assign(`https://localhost:3001/products.html?productid=${productid}`)
                         if (userData == null) return
 
                         const { userid, type } = JSON.parse(userData)[0]
 
                         //Check if user is admin
-                        if (type.toLowerCase() != "admin") window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                        if (type.toLowerCase() != "admin") window.location.assign(`https://localhost:3001/products.html?productid=${productid}`)
                         if (type.toLowerCase() != "admin") return
 
                         const isAuthorized = () => {
-                          axios.post(`http://localhost:8081/user/isloggedin`, { userid, type }, {
+                          axios.post(`https://localhost:8081/user/isloggedin`, { userid, type }, {
                             headers: { 'authorization': 'Bearer ' + token }
                           }).then(({ data }) => {
                             if (data) {
                               let { userid, type } = data
                               if (type.toLowerCase() != "admin")
-                                window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                                window.location.assign(`https://localhost:3001/products.html?productid=${productid}`)
                             }
                           }).catch((err) => {
-                            window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                            window.location.assign(`https://localhost:3001/products.html?productid=${productid}`)
                           });
                         }
 
@@ -195,7 +195,7 @@
 
                             let data = { name, description, categoryid, brand, price }
 
-                            axios.put(`http://localhost:8081/product/${productid}`, data, {
+                            axios.put(`https://localhost:8081/product/${productid}`, data, {
                               headers: { 'authorization': 'Bearer ' + token }
                             }).then((data) => {
                               $("#prodAddFeedback").addClass("text-success").removeClass("text-danger")
@@ -218,7 +218,7 @@
                             let dataImage = new FormData()
                             dataImage.append("image", file)
 
-                            axios.post(`http://localhost:8081/product/${productid}/image`, dataImage, {
+                            axios.post(`https://localhost:8081/product/${productid}/image`, dataImage, {
                               headers: { 'authorization': 'Bearer ' + token }
                             }).then((data) => {
                               if (data != null) {
@@ -247,7 +247,7 @@
                         const backButton = () => {
                           $(document).on("click", "#back", function (e) {
                             e.preventDefault()
-                            window.location.assign(`http://localhost:3001/products.html?productid=${productid}`)
+                            window.location.assign(`https://localhost:3001/products.html?productid=${productid}`)
                           })
                         }
 
@@ -267,11 +267,11 @@
                         const deleteProduct = () => {
                           $(document).on("click", "#prodDelete", function (e) {
                             e.preventDefault()
-                            axios.delete(`http://localhost:8081/product/${productid}`, {
+                            axios.delete(`https://localhost:8081/product/${productid}`, {
                               headers: { 'authorization': 'Bearer ' + token }
                             }).then((data) => {
                               window.alert("Successfully deleted")
-                              window.location.assign("http://localhost:3001/products.html")
+                              window.location.assign("https://localhost:3001/products.html")
                             }).catch((err) => {
                               window.alert("Error Deleting")
                             });
@@ -279,7 +279,7 @@
                         }
 
                         const loadForm = () => {
-                          axios.get(`http://localhost:8081/category`).then(({ data }) => {
+                          axios.get(`https://localhost:8081/category`).then(({ data }) => {
                             let divCatDropdown = ""
                             if (data != null) {
                               data.forEach(({ categoryid: catid, category, description }) => {
@@ -517,7 +517,7 @@
                         let darkstar = `<li> <i class="fa fa-star darkstar"></i></li> `
                         let carouselIndicator = (imageNum, isActive) => `<li data-target="#carouselIndicators" data-slide-to="${imageNum}" ${isActive ? 'class="active"' : ""}></li>`
                         let carouselItem = (imagePath, isActive) => `<div class="carousel-item ${isActive ? "active" : ""}">
-      <img class="rounded mx-auto d-block my-5" src="http://localhost:8081/${imagePath}">
+      <img class="rounded mx-auto d-block my-5" src="https://localhost:8081/${imagePath}">
     </div>`
                         let numOfStar = Math.floor(rating);
                         let numOfHalf = (Math.round(rating) - Math.floor(rating)) > 0 ? 1 : 0;
@@ -586,13 +586,13 @@
   </a>
 </div>
 
-<!--<a href="http://localhost:3001/products.html?productid=${productid}" class="col">
+<!--<a href="https://localhost:3001/products.html?productid=${productid}" class="col">
                             <img
-                              src="${imagepath != null ? "http://localhost:8081/" + imagepath : null}"
+                              src="${imagepath != null ? "https://localhost:8081/" + imagepath : null}"
                               alt="" class="rounded mx-auto d-block my-5">
                           </a> -->
                           <div class="col product-format">
-                            <a href="http://localhost:3001/products.html?productid=${productid}">
+                            <a href="https://localhost:3001/products.html?productid=${productid}">
                               <h4>${name} (${brand})</h4>
                             </a>
                              <h3 style=" margin-bottom: 20px;">${categoryname}</h4>
@@ -717,7 +717,7 @@
           //delete review
           $.ajax({
             headers: { "authorization": "Bearer " + token },
-            url: "http://localhost:8081/review/" + reviewid,
+            url: "https://localhost:8081/review/" + reviewid,
             type: "DELETE",
             contentType: "application/json",
             dataType: "json",
@@ -756,7 +756,7 @@
 
           $.ajax({
             headers: { "authorization": "Bearer " + token },
-            url: "http://localhost:8081/product/" + productid + "/review/",
+            url: "https://localhost:8081/product/" + productid + "/review/",
             type: "POST",
             data: data,
             contentType: "application/json",
@@ -789,7 +789,7 @@
         if (searchParams.has("brand")) {
           var brand = searchParams.get("brand")
           $("#brandButton").html(brand)
-          getProductUrl = "http://localhost:8081/product/brand/" + brand
+          getProductUrl = "https://localhost:8081/product/brand/" + brand
         }
 
         //Get product
@@ -797,7 +797,7 @@
 
         //Load brand drop down
         $.ajax({
-          url: "http://localhost:8081/product",
+          url: "https://localhost:8081/product",
           type: "GET",
           contentType: "application/json",
           dataType: "json",
@@ -831,11 +831,11 @@
           e.preventDefault()
           let brand = $(this).text()
           if (brand.toLowerCase() == "disable") {
-            getProductUrl = "http://localhost:8081/product/"
+            getProductUrl = "https://localhost:8081/product/"
             $("#brandButton").html("Brand")
             productDiv()
           } else {
-            getProductUrl = "http://localhost:8081/product/brand/" + brand
+            getProductUrl = "https://localhost:8081/product/brand/" + brand
             $("#brandButton").html(brand)
             productDiv(brand)
           }

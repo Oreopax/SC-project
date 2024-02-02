@@ -45,7 +45,7 @@
       const token = localStorage.getItem('JWT');
       const userData = localStorage.getItem("User");
 
-      if (userData != null || token != null) window.location.assign(`http://localhost:3001/index.html`)
+      if (userData != null || token != null) window.location.assign(`https://localhost:3001/index.html`)
       if (userData != null || token != null) return
 
       $("#signin").click(function () {
@@ -54,12 +54,12 @@
         let data = { password, username }
         // var data = `{"username": "${username}","password": "${password}"}`
 
-        axios.post(`http://localhost:8081/user/login`, data).then(({ data }) => {
+        axios.post(`https://localhost:8081/user/login`, data).then(({ data }) => {
           if (data != null) {
             $("#feedback").html("Logged in!").removeClass("text-danger").addClass("text-success")
             localStorage.setItem("JWT", data.token)
             localStorage.setItem("User", data.UserData);
-            window.location.assign("http://localhost:3001/index.html")
+            window.location.assign("https://localhost:3001/index.html")
           } else
             $("#feedback").html("Wrong Login Credentials Provided")
         }).catch((err) => $("#feedback").html("Wrong Login Credentials Provided"));
@@ -95,7 +95,7 @@
         if (username == "" || email == "" || contact == "" || isNaN(contact) || profile_pic_url == "" || password == "" || comfirmpassword == "" || comfirmpassword != password) return false
 
         let data = { username, email, contact, password, profile_pic_url }
-        axios.post(`http://localhost:8081/users`, data).then((data) => {
+        axios.post(`https://localhost:8081/users`, data).then((data) => {
           console.log(data)
           $("#regFeedback").removeClass("text-danger").addClass("text-success")
           $("#regFeedback").html("Success!")
