@@ -161,24 +161,6 @@ app.get('/product', (req, res) => {
     })
 });
 
-//login
-// app.post('/user/login', function (req, res) {
-//     var username = req.body.username;
-//     var password = req.body.password;
-
-//     userDB.loginUser(username, password, function (err, result, token) {
-//         if (!err) {
-//             res.statusCode = 200;
-//             res.setHeader('Content-Type', 'application/json');
-//             delete result[0]['password'];//clear the password in json data, do not send back to client
-//             console.log(result[0].username + " logged in");
-//             res.json({ success: true, UserData: JSON.stringify(result), token: token, status: 'You are successfully logged in!' });
-//         } else {
-//             res.status(500);
-//             res.send("Error Code: " + err.statusCode);
-//         }
-//     });
-// });
 
 app.post('/user/login', function (req, res) {
     var username = req.body.username;
@@ -198,6 +180,12 @@ app.post('/user/login', function (req, res) {
 
         const userData = user[0];
 
+        // Check if the user is currently banned
+        if (userData.ban_until && new Date(userData.ban_until) > new Date()) {
+            res.status(403).send("Your account is temporarily banned due to multiple failed login attempts.");
+            return;
+        }
+
         if (!password || !userData.password) {
             res.status(400).send("Invalid request data.");
             return;
@@ -211,17 +199,36 @@ app.post('/user/login', function (req, res) {
             }
 
             if (!isMatch) {
-                res.status(401).send("Username or password is incorrect.");
+                // Increment failed login attempts
+                userDB.incrementFailedLoginAttempts(username, function(err) {
+                    if (err) {
+                        res.status(500).send("Error updating failed login attempts.");
+                    } else {
+                        res.status(401).send("Username or password is incorrect.");
+                    }
+                });
                 return;
             }
 
+            // If password matches, recheck the ban status before proceeding with login
+            // This is to handle any race conditions or timing issues
+            if (userData.ban_until && new Date(userData.ban_until) > new Date()) {
+                res.status(403).send("Your account is still temporarily banned.");
+                return;
+            }
+
+            // At this point, the user is not banned, and the password matches
+            // Instead of immediately resetting failed login attempts here, consider moving this logic into `userDB.loginUser`
+            // to ensure it's only done when the login process is fully validated and successful
+
             // Passwords match, call loginUser
-            userDB.loginUser(username, function (err, result, token) {
+            userDB.loginUser(username, password, function (err, result, token) {
                 if (err) {
                     res.status(500).send("Error during login process.");
                     return;
                 }
 
+                // Assuming loginUser correctly handles resetting failed login attempts and finalizing the login process
                 // Remove password from user data before sending response
                 if (result && result[0]) {
                     delete result[0]['password'];
@@ -237,7 +244,6 @@ app.post('/user/login', function (req, res) {
         });
     });
 });
-
 
 
 //Api no. 1 Endpoint: POST /users/ | Add new user

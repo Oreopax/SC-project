@@ -200,8 +200,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `userid` int NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
@@ -211,19 +209,32 @@ CREATE TABLE `user` (
   `type` varchar(100) NOT NULL,
   `profile_pic_url` varchar(100) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `failed_login_attempts` INT NOT NULL DEFAULT 0,
+  `ban_until` DATETIME NULL,
   PRIMARY KEY (`userid`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `user`
 --
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (2,'Johnson','johnson@gmail.com',97821333,'abcd8734','Customer','https://i.imgur.com/lus3hWV.jpg','2021-11-27 07:38:41'),(36,'Marry','marry@gmail.com',91234567,'IJd89hi3f3dwa','Customer','https://i.imgur.com/LApAGif_d.webp?maxwidth=1520&fidelity=grand','2021-11-27 13:09:01'),(37,'Garry','garry@hotmail.com',87832144,'poojohd98q3h','Customer','https://i.imgur.com/gcPqyRO.png','2021-11-27 14:59:33'),(38,'Joshua','joshua1273@gmail.com',84637283,'jos123','Customer','https://www.abc.com/jos.jpg','2021-12-03 01:38:36'),(39,'User127','user127@gmail.com',84327894,'d83cnh3e9j903j','Customer','https://www.abc.com/user127.jpg','2021-12-03 09:54:33'),(41,'User1274','user1274@gmail.com',83271893,'dh893chdcwojce','Customer','https://www.abc.com/user1274.jpg','2021-12-03 09:59:19'),(43,'User12745','User12745@gmail.com',84728304,'ndiwdu3ch9di3c','Customer','https://www.abc.com/newuser12745.jpg','2021-12-04 12:32:36'),(45,'Terry Tan','terry@gmail.com',91234567,'abc123456','Customer','https://www.abc.com/terry.jpg','2021-12-04 11:33:51'),(64,'Jerry tan','User12745@gmail.com2',84728304,'ndiwdu3ch9di3c','Customer','https://www.abc.com/newuser12745.jpg','2022-01-07 04:50:15'),(66,'user','user@gmail.com',98765432,'123','Admin','https://www.abc.com/newuser12745.jpg','2022-02-06 06:58:31'),(67,'user1','user1@gmail.com',98765432,'123','Customer','https://i.imgur.com/EzcLTUH.jpg','2022-01-29 18:30:49'),(68,'Yuhong','yuhong@mail.com',81234567,'123','Customer','https://www.abc.com/newuser12745.jpg','2022-02-05 12:42:21'),(71,'Harrison','Harrison@gmail.com',97351626,'123','Customer','http://localhost:3001/login.html','2022-02-06 17:16:33');
+INSERT INTO `user` VALUES 
+(2, 'Johnson', 'johnson@gmail.com', 97821333, 'abcd8734', 'Customer', 'https://i.imgur.com/lus3hWV.jpg', '2021-11-27 07:38:41', 0, NULL),
+(36, 'Marry', 'marry@gmail.com', 91234567, 'IJd89hi3f3dwa', 'Customer', 'https://i.imgur.com/LApAGif_d.webp?maxwidth=1520&fidelity=grand', '2021-11-27 13:09:01', 0, NULL),
+(37, 'Garry', 'garry@hotmail.com', 87832144, 'poojohd98q3h', 'Customer', 'https://i.imgur.com/gcPqyRO.png', '2021-11-27 14:59:33', 0, NULL),
+(38, 'Joshua', 'joshua1273@gmail.com', 84637283, 'jos123', 'Customer', 'https://www.abc.com/jos.jpg', '2021-12-03 01:38:36', 0, NULL),
+(39, 'User127', 'user127@gmail.com', 84327894, 'd83cnh3e9j903j', 'Customer', 'https://www.abc.com/user127.jpg', '2021-12-03 09:54:33', 0, NULL),
+(41, 'User1274', 'user1274@gmail.com', 83271893, 'dh893chdcwojce', 'Customer', 'https://www.abc.com/user1274.jpg', '2021-12-03 09:59:19', 0, NULL),
+(43, 'User12745', 'User12745@gmail.com', 84728304, 'ndiwdu3ch9di3c', 'Customer', 'https://www.abc.com/newuser12745.jpg', '2021-12-04 12:32:36', 0, NULL),
+(45, 'Terry Tan', 'terry@gmail.com', 91234567, 'abc123456', 'Customer', 'https://www.abc.com/terry.jpg', '2021-12-04 11:33:51', 0, NULL),
+(64, 'Jerry tan', 'User12745@gmail.com2', 84728304, 'ndiwdu3ch9di3c', 'Customer', 'https://www.abc.com/newuser12745.jpg', '2022-01-07 04:50:15', 0, NULL),
+(66, 'user', 'user@gmail.com', 98765432, '123', 'Admin', 'https://www.abc.com/newuser12745.jpg', '2022-02-06 06:58:31', 0, NULL),
+(67, 'user1', 'user1@gmail.com', 98765432, '123', 'Customer', 'https://i.imgur.com/EzcLTUH.jpg', '2022-01-29 18:30:49', 0, NULL),
+(68, 'Yuhong', 'yuhong@mail.com', 81234567, '123', 'Customer', 'https://www.abc.com/newuser12745.jpg', '2022-02-05 12:42:21', 0, NULL),
+(71, 'Harrison', 'Harrison@gmail.com', 97351626, '123', 'Customer', 'http://localhost:3001/login.html', '2022-02-06 17:16:33', 0, NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
