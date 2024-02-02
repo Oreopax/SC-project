@@ -1,0 +1,13 @@
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:13:26:33 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:13:26:33 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0\""}
+{"level":"info","message":"POST /user/login - Login attempt for username: kool"}
+{"level":"info","message":"POST /user/login - Successful login for username: kool"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:13:26:46 +0000] \"POST /user/login HTTP/1.1\" 200 476 \"http://localhost:3001/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0\""}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:13:26:46 +0000] \"POST /user/isloggedin HTTP/1.1\" 200 31 \"http://localhost:3001/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0\""}
+{"level":"info","message":"GET /product/ - Requested by user ID: undefined"}
+{"level":"info","message":"GET /product/ - Success"}
+{"level":"info","message":"127.0.0.1 - - [02/Feb/2024:13:26:46 +0000] \"GET /product/ HTTP/1.1\" 304 - \"http://localhost:3001/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0\""}
